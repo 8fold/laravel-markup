@@ -41,7 +41,7 @@ class UIKit extends PHPUIKit
             return new $class($args[0], $args[1]);
         }
 
-        return new $class();
+        return new $class(...$args);
         // if ($element === 'emailInput') {
         //     return new $class();
         // }
@@ -95,7 +95,9 @@ class UIKit extends PHPUIKit
           'webView'    => Elements\Pages\WebView::class,
           'form'       => Elements\Forms\Form::class,
           'emailInput' => Elements\FormControls\InputEmail::class,
-          'textInput'  => Elements\FormControls\InputText::class
+          'textInput'  => Elements\FormControls\InputText::class,
+          'h2'         => Elements\Simple\H2::class,
+          'button'     => Elements\Simple\Button::class
 
         // , 'form' => Elements\Forms\Form::class
 

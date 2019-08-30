@@ -1,5 +1,5 @@
 {
-  "name": "8fold/uikit-laravel",
+  "name": "8fold/laravel-uikit",
   "description": "A library for implementing HTML UI components in PHP projects.",
   "type": "library",
   "license": "MIT",
@@ -11,13 +11,13 @@
   "repositories": [
       {
         "type": "path",
-        "url": "../uikit-php",
-        "name": "8fold/uikit-php"
+        "url": "../php-uikit",
+        "name": "8fold/php-uikit"
       }
   ],
   "require": {
     "php": ">=7.0.0",
-    "8fold/uikit-php": "^0.0.1"
+    "8fold/php-uikit": "^0.0.1"
   },
   "require-dev": {
     "phpunit/phpunit": ">=6.0"

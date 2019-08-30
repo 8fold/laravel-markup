@@ -21,7 +21,7 @@ class InputText extends UIKitInputText
 
     private $value;
 
-    private $placeholder;
+    protected $placeholder;
 
     private $errorMessage;
 
@@ -37,11 +37,11 @@ class InputText extends UIKitInputText
         $this->label = Html::text($label);
         $this->name = $name;
         $this->value = "value {$value}";
-        $this->placeholder = "placeholder {$placeholder}";
+        // $this->placeholder = "placeholder {$placeholder}";
 
         $errors = session()->get('errors', new MessageBag);
         $this->errorMessage = Html::text("");
-        $this->class = "class border border-black";
+        $this->class = "class border border-8fold-black rounded py-1 px-4 min-w-1/2 text-2xl";
         if ($errors !== null && $errors->has($name)) {
             $this->errorMessage = Html::span(
                 Html::text($errors->first($name))
@@ -58,6 +58,7 @@ class InputText extends UIKitInputText
                 "name ". $this->name, 
                 "id ". $this->name, 
                 $this->class,
+                "placeholder ". $this->placeholder,
                 "required required"
             )
             : Html::input()->attr(
@@ -70,9 +71,15 @@ class InputText extends UIKitInputText
             );
 
         return Html::div(
-            Html::label($this->label)->attr("for ". $this->name),
+            Html::label($this->label)->attr("for ". $this->name, "class block mt-4"),
             $this->errorMessage,
             $input
         )->is("form-control")->compile();
+    }
+
+    public function placeholder(string $placeholder): InputText
+    {
+        $this->placeholder = $placeholder;
+        return $this;
     }
 }

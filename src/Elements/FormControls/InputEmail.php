@@ -15,5 +15,12 @@ class InputEmail extends InputText
         string $placeholder = '')
     {
         parent::__construct($label, $name, $value, $placeholder);
+        if (strlen($this->placeholder) > 0) {
+        	$this->placeholder($this->placeholder);
+
+        } else {
+        	$this->placeholder("john@8fold.pro");
+
+        }
     }
 }
