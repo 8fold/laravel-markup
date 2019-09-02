@@ -21,7 +21,7 @@ class WebView extends UIKitWebView
     public function compile(string ...$attributes): string
     {
         $this->headMeta(   
-            UIKit::meta()->attr("name csrf-token", "content ". csrf_token()),             
+            UIKit::meta()->attr("name csrf-token", "content ". csrf_token()),
             UIKit::meta()->attr("charset utf-8"),
             UIKit::meta()->attr("name viewport", "content width=device-width, initial-scale=1"),
             // UIKit::script()->attr("src ". asset('js/app.js'), "defer defer"),
@@ -33,7 +33,6 @@ class WebView extends UIKitWebView
             : Html::text("");
 
         array_unshift($this->bodyContent, $message);
-        
-        return parent::compile();
+        return parent::compile(...$attributes);
     }
 }

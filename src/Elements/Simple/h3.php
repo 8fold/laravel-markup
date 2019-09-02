@@ -7,7 +7,7 @@ use Eightfold\Html\Elements\HtmlElement;
 
 use Eightfold\UIKit\UIKit;
 
-class H2 extends HtmlElement
+class H3 extends HtmlElement
 {
 	private $text = "";
 
@@ -18,6 +18,6 @@ class H2 extends HtmlElement
 
     public function compile(string ...$attributes): string
     {
-    	return Html::h2(Html::text($this->text))->attr("class w-full font-headline text-5xl mt-4 mb-2 text-8fold-black")->compile();
+    	return Html::h3(Html::text($this->text))->attr("class font-headline text-4xl text-8fold-black-light")->compile();
     }
 }

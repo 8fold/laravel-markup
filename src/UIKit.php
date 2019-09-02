@@ -37,58 +37,11 @@ class UIKit extends PHPUIKit
             return new $class($methodAction, ...$args);
         }
 
-        if ($element === 'textInput') {
+        if ($element === 'textInput' || $element === 'link') {
             return new $class($args[0], $args[1]);
         }
 
         return new $class(...$args);
-        // if ($element === 'emailInput') {
-        //     return new $class();
-        // }
-
-        // $class = self::classForElement($element);
-
-        // $classElement = (object) ['class' => $class, 'element' => $element];
-
-        // switch ($classElement) {
-        //     case ($classElement->element == 'web_view'):
-        //         $title = $args[0];
-        //         $bodyAttr = $args[1];
-
-        //         unset($args[0]);
-        //         unset($args[1]);
-
-        //         return new $class($title, $bodyAttr, ...$args);
-        //         break;
-
-        //     case ($classElement->element == 'csrf_field'):
-        //         return new $class();
-        //         break;
-
-        //     case ($classElement->element == 'form'):
-                // $methodAction = $args[0];
-                // unset($args[0]);
-                // return new $class($methodAction, ...$args);
-        //         break;
-
-        //     case (
-        //            $classElement->element == 'select'
-        //         || $classElement->element == 'text_input'
-        //     ):
-        //         if (isset($args[3])) {
-        //             return new $class($args[0], $args[1], $args[2], $args[3]);
-
-        //         } elseif (isset($args[2])) {
-        //             return new $class($args[0], $args[1], $args[2]);
-
-        //         }
-        //         return new $class($args[0], $args[1]);
-        //         break;
-
-        //     default:
-        //         return parent::$element(...$args);
-        //         break;
-        // }
     }
 
     const CLASSES = [
@@ -97,7 +50,10 @@ class UIKit extends PHPUIKit
           'emailInput' => Elements\FormControls\InputEmail::class,
           'textInput'  => Elements\FormControls\InputText::class,
           'h2'         => Elements\Simple\H2::class,
-          'button'     => Elements\Simple\Button::class
+          'h3'         => Elements\Simple\H3::class,
+          'button'     => Elements\Simple\Button::class,
+
+          'practitionerCard' => Elements\Compound\PractitionerCard::class
 
         // , 'form' => Elements\Forms\Form::class
 
