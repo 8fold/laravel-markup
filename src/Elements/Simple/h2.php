@@ -22,13 +22,10 @@ class H2 extends HtmlElement
 
     public function compile(string ...$attributes): string
     {
-    	return Html::h2(Html::text($this->text))->attr("class w-full font-headline m-2 mt-4 {$this->textSize}  {$this->textColor}")->compile();
-    }
-
-    public function inverse()
-    {
-    	$this->textColor = "text-8fold-white";
-    	$this->textSize = "text-2xl";
-    	return $this;
+        $attributes = array_merge(
+            ["class w-full font-headline m-2 mt-4 {$this->textSize}  {$this->textColor}"],
+            $this->getAttr()
+        );
+    	return Html::h2(Html::text($this->text))->attr(...$attributes)->compile();
     }
 }
