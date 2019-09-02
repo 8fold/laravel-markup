@@ -41,7 +41,7 @@ class InputText extends UIKitInputText
 
         $errors = session()->get('errors', new MessageBag);
         $this->errorMessage = Html::text("");
-        $this->class = "class border border-8fold-black rounded py-1 px-4 min-w-1/2 text-2xl";
+        $this->class = "class border border-8fold-black rounded py-1 px-4 text-2xl";
         if ($errors !== null && $errors->has($name)) {
             $this->errorMessage = Html::span(
                 Html::text($errors->first($name))

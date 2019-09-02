@@ -18,6 +18,6 @@ class H3 extends HtmlElement
 
     public function compile(string ...$attributes): string
     {
-    	return Html::h3(Html::text($this->text))->attr("class font-headline text-4xl text-8fold-black-light")->compile();
+    	return Html::h3(Html::text($this->text))->attr("class m-2 font-headline text-4xl text-8fold-black-light")->compile();
     }
 }

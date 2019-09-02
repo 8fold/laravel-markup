@@ -11,6 +11,10 @@ class H2 extends HtmlElement
 {
 	private $text = "";
 
+	private $textColor = "text-8fold-black";
+
+	private $textSize = "text-5xl";
+
     public function __construct(...$text)
     {
     	$this->text = $text[0];
@@ -18,6 +22,13 @@ class H2 extends HtmlElement
 
     public function compile(string ...$attributes): string
     {
-    	return Html::h2(Html::text($this->text))->attr("class w-full font-headline text-5xl mt-4 mb-2 text-8fold-black")->compile();
+    	return Html::h2(Html::text($this->text))->attr("class w-full font-headline m-2 mt-4 {$this->textSize}  {$this->textColor}")->compile();
+    }
+
+    public function inverse()
+    {
+    	$this->textColor = "text-8fold-white";
+    	$this->textSize = "text-2xl";
+    	return $this;
     }
 }
