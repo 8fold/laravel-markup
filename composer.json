@@ -1,26 +1,28 @@
 {
   "name": "8fold/laravel-uikit",
-  "description": "A library for implementing HTML UI components in PHP projects.",
+  "description": "A library for implementing HTML UI components in Laravel projects.",
   "type": "library",
   "license": "MIT",
   "version": "0.0.1",
-  "authors": [{
+  "authors": [
+    {
       "name": "Josh Bruce",
       "email": "josh@joshuabruce.com"
-  }],
+    }
+  ],
   "repositories": [
-      {
-        "type": "path",
-        "url": "../php-uikit",
-        "name": "8fold/php-uikit"
-      }
+    {
+      "type": "path",
+      "url": "../php-uikit",
+      "name": "8fold/php-uikit"
+    }
   ],
   "require": {
-    "php": ">=7.0.0",
-    "8fold/php-uikit": "^0.0.1"
+    "php": "~7",
+    "8fold/php-uikit": "~0.1"
   },
   "require-dev": {
-    "phpunit/phpunit": ">=6.0"
+    "phpunit/phpunit": "~9.1"
   },
   "minimum-stability": "dev",
   "autoload": {
@@ -31,6 +33,6 @@
   "autoload-dev": {
     "psr-4": {
       "Eightfold\\LaravelUIKit\\Tests\\": "tests/"
-    }        
-  }    
+    }
+  }
 }
