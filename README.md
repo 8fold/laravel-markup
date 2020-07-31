@@ -30,4 +30,4 @@ namespace Your\Namespace;
 use Eightfold\LaravelMarkup\UIKit;
 ```
 
-In some cases, the classes and methods will be named the same and use similar, if not the same, arguments.
+In some cases, the classes and methods will be named the same and use similar, if not the same, argument list.
