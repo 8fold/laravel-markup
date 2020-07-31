@@ -9,10 +9,16 @@ use Eightfold\Shoop\ESDictionary;
 
 class UIKit extends PHPUIKit
 {
-    static public function form($methodAction = "post /", ...$controls)
+    static public function form(string $methodAction = "post /", ...$controls)
     {
         $class = static::classFor("form");
-        return $class::fold($methodAction, $controls);
+        return $class::fold($methodAction, ...$controls);
+    }
+
+    static public function select(string $label, string $name, string $value = "")
+    {
+        $class = static::classFor("select");
+        return $class::fold($label, $name, $value);
     }
 
     // static public function __callStatic(string $element, array $args)
@@ -67,7 +73,8 @@ class UIKit extends PHPUIKit
         $prefix = Shoop::array(["Eightfold", "LaravelMarkup", "Elements"]);
         $map = Shoop::dictionary([]);
         $compiler = Shoop::dictionary([])->plus(
-            $prefix->plus("Forms", "Form"), "form"
+            $prefix->plus("Forms", "Form"), "form",
+            $prefix->plus("FormControls", "Select"), "select"
 
         )->each(function($class, $method) use (&$map) {
             $class = $class->join("\\");

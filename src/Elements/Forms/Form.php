@@ -2,9 +2,9 @@
 
 namespace Eightfold\LaravelMarkup\Elements\Forms;
 
-use Eightfold\Markup\UIKit as PHPUIKit;
+use Eightfold\Markup\Html\Elements\HtmlElement;
 
-use Eightfold\Markup\Html\Elements\HtmlElement as HtmlElement;
+use Eightfold\Markup\UIKit as PHPUIKit;
 
 use Eightfold\Shoop\Shoop;
 use Eightfold\Shoop\Helpers\Type;
@@ -34,7 +34,7 @@ class Form extends HtmlElement
             $token = "testing";
         }
 
-        $content = Shoop::array($this->content)->plus(
+        $content = $this->content->plus(
             PHPUIKit::input()->attr("type hidden", "name _token", "value {$token}"),
             PHPUIKit::button($this->submitLabel)
         );
