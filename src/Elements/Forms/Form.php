@@ -1,41 +1,49 @@
 <?php
 
-namespace Eightfold\LaravelUIKit\Elements\Forms;
+namespace Eightfold\LaravelMarkup\Elements\Forms;
 
-use Illuminate\Support\Str;
+use Eightfold\Markup\UIKit as PHPUIKit;
 
-use Eightfold\Html\Elements\HtmlElement;
-use Eightfold\HtmlComponent\Interfaces\Compile;
+use Eightfold\Markup\Html\Elements\HtmlElement as HtmlElement;
 
-use Eightfold\Html\Html;
-// use Eightfold\UIKit\UIKit;
-// use Eightfold\LaravelUIKit\UIKit as LaravelUI;
+use Eightfold\Shoop\Shoop;
+use Eightfold\Shoop\Helpers\Type;
 
-class Form extends HtmlElement implements Compile
+class Form extends HtmlElement
 {
-    protected $method = '';
-    protected $action = '';
-    protected $content = [];
+    private $method = "post";
+    private $action = "/";
 
-    public function __construct(string $methodAction = "post /", Compile ...$content)
+    private $submitLabel = "Submit";
+
+    public function __construct($methodAction, ...$content)
     {
-        list($method, $action) = parent::splitFirstSpace($methodAction);
+        $this->content = Type::sanitizeType($content, ESArray::class);
 
-        $this->method = $method;
-        $this->action = $action;
-
-        $this->content = $content;
-        $this->content[] = Html::input()
-            ->attr("type hidden", "name _token", "value ". csrf_token());
-        $this->content[] = Html::input()
-        	->attr("type hidden", "name _method", "value ". strtoupper($method));
+        list($method, $action) = Shoop::string($methodAction)->divide(" ", false, 2);
+        $this->attributes = Shoop::dictionary([
+            "method" => $method,
+            "action" => $action
+        ]);
     }
 
-    public function compile(string ...$attributes): string
+    public function unfold(): string
     {
+        $token = csrf_token();
+        if (env("APP_ENV") === "testing" and $token === null) {
+            $token = "testing";
+        }
 
-        return Html::form(...$this->content)
-            ->attr('method '. $this->method, 'action '. $this->action)
-            ->compile(...array_merge($this->getAttr(), $attributes));
+        $content = Shoop::array($this->content)->plus(
+            PHPUIKit::input()->attr("type hidden", "name _token", "value {$token}"),
+            PHPUIKit::button($this->submitLabel)
+        );
+
+        return PHPUIKit::form(...$content)
+            ->attr(...$this->attributes()->plus(
+                "action {$this->action}",
+                "method {$this->method}"
+            )
+        );
     }
 }

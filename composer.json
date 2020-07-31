@@ -10,29 +10,24 @@
       "email": "josh@joshuabruce.com"
     }
   ],
-  "repositories": [
-    {
-      "type": "path",
-      "url": "../php-uikit",
-      "name": "8fold/php-uikit"
-    }
-  ],
   "require": {
     "php": "~7",
-    "8fold/php-uikit": "~0.1"
+    "8fold/php-markup": "~0.1"
   },
   "require-dev": {
+    "orchestra/testbench": "~5.3",
+    "orchestra/testbench-browser-kit": "~5.1",
     "phpunit/phpunit": "~9.1"
   },
-  "minimum-stability": "dev",
   "autoload": {
     "psr-4": {
-      "Eightfold\\LaravelUIKit\\": "src/"
+      "Eightfold\\LaravelMarkup\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Eightfold\\LaravelUIKit\\Tests\\": "tests/"
+      "Eightfold\\LaravelMarkup\\Tests\\": "tests/"
     }
-  }
+  },
+  "prefer-stable": true
 }
