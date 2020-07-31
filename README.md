@@ -8,6 +8,10 @@ Let's be honest, the main reason for this library is to make Laravel form genera
 
 ## Installation
 
+```bash
+composer require 8fold/laravel-markup
+```
+
 ## Usage
 
 As an extension of PHP Markup and wanting to make it as simple as possible to switch between the two, Laravel Markup uses the same entry class (`UIKit`) under a different namespace (`Eightfold\LaravelUIKit`) and falling back to PHP Markup, PHP HTML, and PHP Element before failing out right. Therefore, if you want to switch from using PHP Markup to using Laravel Markup, you should be able to change the namespace:
