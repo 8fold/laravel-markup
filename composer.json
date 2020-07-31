@@ -3,11 +3,10 @@
   "description": "A library for implementing HTML UI components in Laravel projects.",
   "type": "library",
   "license": "MIT",
-  "version": "0.0.1",
   "authors": [
     {
       "name": "Josh Bruce",
-      "email": "josh@joshuabruce.com"
+      "email": "josh@joshbruce.dev"
     }
   ],
   "require": {
