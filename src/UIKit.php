@@ -41,6 +41,15 @@ class UIKit extends PHPUIKit
         return $class::fold($methodAction, $label, $name, old($name));
     }
 
+    static public function inputEmail(string $label = "Email address", string $name = "email")
+    {
+        $class = static::classFor("inputEmail");
+        if (old($name) === null) {
+            return $class::fold($label, $name);
+        }
+        return $class::fold($label, $name, old($name));
+    }
+
     // static public function __callStatic(string $element, array $args)
     // {
     //     if ($element === "data_path") {
@@ -95,7 +104,8 @@ class UIKit extends PHPUIKit
         $compiler = Shoop::dictionary([])->plus(
             $prefix->plus("Forms", "Form"), "form",
             $prefix->plus("Navigations", "QuickChangeNavigation"), "quickChangeNavigation",
-            $prefix->plus("FormControls", "Select"), "select"
+            $prefix->plus("FormControls", "Select"), "select",
+            $prefix->plus("FormControls", "InputEmail"), "inputEmail"
 
         )->each(function($class, $method) use (&$map) {
             $class = $class->join("\\");
