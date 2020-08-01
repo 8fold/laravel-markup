@@ -87,16 +87,6 @@ class MainTest extends TestCase
         $actual = UIKit::select("Select", "select");
         $this->assertEquals($expected, $actual->unfold());
 
-        $errorBag = (new ViewErrorBag)
-            ->put("default", new MessageBag([
-                "select" => ["This is our error."]
-            ])
-        );
-        session()->put("errors", $errorBag);
-        $expected = '<div is="form-control"><label id="select-label" for="select">Select</label><select id="select" name="select"></select></div>';
-        $actual = UIKit::select("Select", "select")->optional();
-        $this->assertEquals($expected, $actual->unfold());
-
         $expected = '<div is="form-control"><label id="select-label" for="select">Select</label><select id="select" name="select" required></select></div>';
         $actual = UIKit::select("Select", "select");
         $this->assertEquals($expected, $actual->unfold());
@@ -140,6 +130,16 @@ class MainTest extends TestCase
                 ],
                 "value3 Option C"
             )->radio();
+        $this->assertEquals($expected, $actual->unfold());
+
+        $errorBag = (new ViewErrorBag)
+            ->put("default", new MessageBag([
+                "select" => ["This is our error."]
+            ])
+        );
+        session()->put("errors", $errorBag);
+        $expected = '<div is="form-control-with-errors"><label id="select-label" for="select">Select</label><span is="form-control-error-message" id="select-error-message">This is our error.</span><select id="select" name="select"></select></div>';
+        $actual = UIKit::select("Select", "select")->optional();
         $this->assertEquals($expected, $actual->unfold());
     }
 
