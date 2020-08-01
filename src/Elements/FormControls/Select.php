@@ -19,6 +19,7 @@ class Select extends HtmlElement
 
     private $type = "dropdown";
 
+    // TODO: replace $value because Laravel has old()
     public function __construct(string $label, string $name, string $value = "")
     {
         $this->label = $label;
