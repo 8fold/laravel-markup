@@ -6,13 +6,23 @@ use Orchestra\Testbench\BrowserKit\TestCase;
 // use PHPUnit\Framework\TestCase;
 
 use Eightfold\LaravelMarkup\UIKit;
+use Eightfold\LaravelMarkup\Elements\FormControls\Select;
+use Eightfold\LaravelMarkup\Elements\Navigations\QuickChangeNavigation;
 
 class MainTest extends TestCase
 {
+    protected function getEnvironmentSetUp($app)
+    {
+        parent::getEnvironmentSetUp($app);
+
+        $app->make('Illuminate\Contracts\Http\Kernel')
+            ->pushMiddleware('Illuminate\Session\Middleware\StartSession');
+    }
+
     public function testQuickChangeNavigation()
     {
         $expected = '<nav id="quick-change-nav"><form action="/" method="post"><label for="quick-change">quick change</label><select id="quick-change" name="quick-change" required><option value="value1">Option A</option><option value="value2" selected>Option B</option></select><input type="hidden" name="_token" value="testing"><button>Go!</button></form></nav>';
-        $actual = UIKit::quickChangeNavigation(
+        $actual = QuickChangeNavigation::fold(
             "post /",
             "quick change",
             "quick-change",
@@ -52,8 +62,9 @@ class MainTest extends TestCase
             );
         $this->assertEquals($expected, $actual->unfold());
 
+        session("select", "value2");
         $expected = '<label for="select">Select</label><select id="select" name="select" required><option value="value1">Option A</option><option value="value2" selected>Option B</option></select>';
-        $actual = UIKit::select("Select", "select", "value2")
+        $actual = Select::fold("Select", "select", "value2")
             ->options(
                 "value1 Option A",
                 "value2 Option B"
@@ -61,7 +72,7 @@ class MainTest extends TestCase
         $this->assertEquals($expected, $actual->unfold());
 
         $expected = '<fieldset><legend>Select</legend><ul><li><label for="optgroup">label</label><input id="optgroup" type="radio" name="select" value="optgroup" checked required></li><li><label for="value1">Option A</label><input id="value1" type="radio" name="select" value="value1" required></li><li><label for="value2">Option B</label><input id="value2" type="radio" name="select" value="value2" required></li><li><label for="value3">Option C</label><input id="value3" type="radio" name="select" value="value3" required></li></ul></fieldset>';
-        $actual = UIKit::select("Select", "select", "optgroup")
+        $actual = Select::fold("Select", "select", "optgroup")
             ->options(
                 [
                     "optgroup label",

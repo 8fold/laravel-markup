@@ -15,21 +15,30 @@ class UIKit extends PHPUIKit
         return $class::fold($methodAction, ...$controls);
     }
 
-    static public function select(string $label, string $name, string $value = "")
+    static public function select(string $label, string $name)
     {
         $class = static::classFor("select");
-        return $class::fold($label, $name, $value);
+        if (old($name) === null) {
+            return $class::fold($label, $name, "");
+        }
+        // TODO: Most likely going to want a way to hand query strings:
+        // request()->queray($name) === $id in previous implementations
+        return $class::fold($label, $name, old($name));
     }
 
     static public function quickChangeNavigation(
         string $methodAction = "post /",
         string $label = "navigation",
-        string $name = "quick-change-nav",
-        string $value = ""
+        string $name = "quick-change-nav"
     )
     {
         $class = static::classFor("quickChangeNavigation");
-        return $class::fold($methodAction, $label, $name, $value);
+        if (old($name) === null) {
+            return $class::fold($methodAction, $label, $name);
+        }
+        // TODO: Most likely going to want a way to hand query strings:
+        // request()->queray($name) === $id in previous implementations
+        return $class::fold($methodAction, $label, $name, old($name));
     }
 
     // static public function __callStatic(string $element, array $args)

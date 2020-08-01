@@ -8,6 +8,7 @@ use Eightfold\Markup\UIKit as PHPUIKit;
 use Eightfold\LaravelMarkup\UIKit;
 
 use Eightfold\LaravelMarkup\Elements\Forms\Form;
+use Eightfold\LaravelMarkup\Elements\FormControls\Select;
 
 use Eightfold\Shoop\Shoop;
 use Eightfold\Shoop\Helpers\Type;
@@ -43,25 +44,9 @@ class QuickChangeNavigation extends Form
         return UIKit::nav(
             UIKit::form(
                 $this->methodAction,
-                UIKit::select($this->label, $this->name, $this->value)
+                Select::fold($this->label, $this->name, $this->value)
                     ->options(...$this->content)
             )->submitLabel($this->submitLabel)
         )->attr(...$this->attributes());
-        // $token = csrf_token();
-        // if (env("APP_ENV") === "testing" and $token === null) {
-        //     $token = "testing";
-        // }
-
-        // $content = $this->content->plus(
-        //     PHPUIKit::input()->attr("type hidden", "name _token", "value {$token}"),
-        //     PHPUIKit::button($this->submitLabel)
-        // );
-
-        // return PHPUIKit::form(...$content)
-        //     ->attr(...$this->attributes()->plus(
-        //         "action {$this->action}",
-        //         "method {$this->method}"
-        //     )
-        // );
     }
 }
