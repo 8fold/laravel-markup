@@ -34,6 +34,14 @@ class MainTest extends TestCase
                 "value3 Option C"
             );
         $this->assertEquals($expected, $actual->unfold());
+
+        $expected = '<label for="select">Select</label><select id="select" name="select"><option value="value1">Option A</option><option value="value2" selected>Option B</option></select>';
+        $actual = UIKit::select("Select", "select", "value2")
+            ->options(
+                "value1 Option A",
+                "value2 Option B"
+            );
+        $this->assertEquals($expected, $actual->unfold());
     }
 
     public function testForm()
@@ -61,6 +69,10 @@ class MainTest extends TestCase
                 "value2 Option B"
             )
         )->attr("id form");
+        $this->assertEquals($expected, $actual->unfold());
+
+        $expected = '<form action="/" method="post"><input type="hidden" name="_token" value="testing"><button>new label</button></form>';
+        $actual = UIKit::form()->submitLabel("new label");
         $this->assertEquals($expected, $actual->unfold());
     }
 
