@@ -45,9 +45,18 @@ class UIKit extends PHPUIKit
     {
         $class = static::classFor("text");
         if (old($name) === null) {
-            return $class::fold($label, $name);
+            $class = $class::fold($label, $name);
+
+        } else {
+            $class = $class::fold($label, $name, old($name));
+
         }
-        return $class::fold($label, $name, old($name));
+
+        if (session()->get("errors") === null or session()->get("errors")->first($name) === null) {
+            return $class;
+        }
+
+        return $class->errorMessage(session()->get("errors")->first($name));
     }
 
     static public function classFor(string $method): string

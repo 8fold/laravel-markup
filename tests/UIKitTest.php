@@ -5,6 +5,9 @@ namespace Eightfold\LaravelMarkup\Tests;
 use Orchestra\Testbench\BrowserKit\TestCase;
 // use PHPUnit\Framework\TestCase;
 
+use Illuminate\Support\ViewErrorBag;
+use Illuminate\Support\MessageBag;
+
 use Eightfold\LaravelMarkup\UIKit;
 use Eightfold\LaravelMarkup\Elements\FormControls\Select;
 use Eightfold\LaravelMarkup\Elements\Navigations\QuickChangeNavigation;
@@ -35,12 +38,26 @@ class MainTest extends TestCase
 
     public function testText()
     {
-        $expected = '<div is="form-control"><label id="counter-label" for="counter">Counter</label><input id="counter" type="text" name="counter" aria-describedby="counter-label" maxlength="254"><span id="counter-counter" aria-live="polite"><i>254</i> characters remaining</span></div>';
-        $actual = UIKit::text("Counter", "counter")->hasCounter();
-        $this->assertEquals($expected, $actual->unfold());
+        // $expected = '<div is="form-control"><label id="counter-label" for="counter">Counter</label><input id="counter" type="text" name="counter" aria-describedby="counter-label" maxlength="254"><span id="counter-counter" aria-live="polite"><i>254</i> characters remaining</span></div>';
+        // $actual = UIKit::text("Counter", "counter")->hasCounter();
+        // $this->assertEquals($expected, $actual->unfold());
 
-        $expected = '<div is="form-control"><label id="counter-label" for="counter">Counter</label><input id="counter" class="long-text" type="text" name="counter" aria-describedby="counter-label" maxlength="254"></div>';
-        $actual = UIKit::text("Counter", "counter")->attr("class long-text");
+        // $expected = '<div is="form-control"><label id="counter-label" for="counter">Counter</label><input id="counter" class="long-text" type="text" name="counter" aria-describedby="counter-label" maxlength="254"></div>';
+        // $actual = UIKit::text("Counter", "counter")->attr("class long-text");
+        // $this->assertEquals($expected, $actual->unfold());
+
+        $expected = '<div is="form-control-with-errors"><label id="counter-label" for="counter">Counter</label><span is="form-control-error-message" id="counter-error-message">This is our error.</span><input id="counter" type="text" name="counter" aria-describedby="counter-label" maxlength="254"></div>';
+        // $actual = UIKit::text("Counter", "counter")
+        //     ->errorMessage("This is our error.");
+        // $this->assertEquals($expected, $actual->unfold());
+
+        $errorBag = (new ViewErrorBag)
+            ->put("default", new MessageBag([
+                "counter" => ["This is our error."]
+            ])
+        );
+        session()->put("errors", $errorBag);
+        $actual = UIKit::text("Counter", "counter");
         $this->assertEquals($expected, $actual->unfold());
     }
 

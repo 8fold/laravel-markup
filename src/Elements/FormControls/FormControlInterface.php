@@ -4,9 +4,13 @@ namespace Eightfold\LaravelMarkup\Elements\FormControls;
 
 interface FormControlInterface
 {
-    function type();
+    public function type(string $type = ""): string;
 
-    function value();
+    public function value(string $value = "");
+
+    public function optional(bool $optional = true);
+
+    public function errorMessage(string $message = "");
 
     function unfold();
 }
