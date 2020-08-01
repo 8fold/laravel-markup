@@ -33,6 +33,13 @@ class MainTest extends TestCase
         $this->assertEquals($expected, $actual->unfold());
     }
 
+    public function testText()
+    {
+        $expected = '<div is="form-control"><label id="counter-label" for="counter">Counter</label><input id="counter" type="text" name="counter" aria-describedby="counter-label" maxlength="254"><span id="counter-counter" aria-live="polite"><i>254</i> characters remaining</span></div>';
+        $actual = UIKit::text("Counter", "counter")->hasCounter();
+        $this->assertEquals($expected, $actual->unfold());
+    }
+
     public function testInputEmail()
     {
         $expected = '<div is="form-control"><label id="email-label" for="email">Email address</label><input id="email" type="email" name="email" aria-describedby="email-label" maxlength="254"></div>';

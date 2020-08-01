@@ -8,8 +8,10 @@ use Eightfold\Shoop\Shoop;
 
 class Text extends FormControl
 {
-    protected $placeholder = "";
-    protected $maxlength = 254;
+    private $placeholder = "";
+    private $maxlength = 254;
+
+    private $hasCounter = false;
 
     public function __construct(
         string $label = "",
@@ -32,6 +34,12 @@ class Text extends FormControl
     public function long()
     {
         $this->type = "textarea";
+        return $this;
+    }
+
+    public function hasCounter()
+    {
+        $this->hasCounter = true;
         return $this;
     }
 
@@ -91,6 +99,17 @@ class Text extends FormControl
 
     public function unfold(): string
     {
-        return PHPUIKit::div($this->label(), $this->input())->attr("is form-control");
+        $counter = (! $this->hasCounter)
+            ? ""
+            : PHPUIKit::span(
+                PHPUIKit::i("{$this->maxlength}"),
+                " characters remaining"
+            )->attr("id {$this->name}-counter", "aria-live polite");
+
+        return PHPUIKit::div(
+            $this->label(),
+            $this->input(),
+            $counter
+        )->attr("is form-control");
     }
 }
