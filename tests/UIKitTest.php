@@ -55,6 +55,18 @@ class MainTest extends TestCase
                 "value2 Option B"
             );
         $this->assertEquals($expected, $actual->unfold());
+
+        $expected = '<fieldset><legend>Select</legend><ul><li><label for="optgroup">label</label><input id="optgroup" type="radio" name="select" value="optgroup" checked></li><li><label for="value1">Option A</label><input id="value1" type="radio" name="select" value="value1"></li><li><label for="value2">Option B</label><input id="value2" type="radio" name="select" value="value2"></li><li><label for="value3">Option C</label><input id="value3" type="radio" name="select" value="value3"></li></ul></fieldset>';
+        $actual = UIKit::select("Select", "select", "optgroup")
+            ->options(
+                [
+                    "optgroup label",
+                    "value1 Option A",
+                    "value2 Option B"
+                ],
+                "value3 Option C"
+            )->radio();
+        $this->assertEquals($expected, $actual->unfold());
     }
 
     public function testForm()

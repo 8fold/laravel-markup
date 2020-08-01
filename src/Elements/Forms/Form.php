@@ -25,6 +25,9 @@ class Form extends HtmlElement
             "method" => $method,
             "action" => $action
         ]);
+
+        $this->method = $method;
+        $this->action = $action;
     }
 
     public function submitLabel(string $label = "")

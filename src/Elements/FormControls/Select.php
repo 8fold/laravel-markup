@@ -15,6 +15,8 @@ class Select extends HtmlElement
     private $name = "select";
     private $value = "";
 
+    private $type = "dropdown";
+
     public function __construct(string $label, string $name, string $value = "")
     {
         $this->label = $label;
@@ -29,11 +31,35 @@ class Select extends HtmlElement
         return $this;
     }
 
+    public function radio()
+    {
+        $this->type = "radio";
+        return $this;
+    }
+
     public function unfold(): string
     {
+        $select = "";
+        if ($this->type === "radio") {
+            $options = Shoop::array([]);
+            $this->content->each(function($option) use (&$options) {
+                    if (Type::isArray($option)) {
+                        Shoop::this($option)->each(function($option) use (&$options) {
+                            $options = $options->plus($this->option($option));
+                        });
+
+                    } else {
+                        $options = $options->plus($this->option($option));
+
+                    }
+                });
+            return PHPUIKit::fieldset(
+                PHPUIKit::legend($this->label),
+                PHPUIKit::listWith(...$options)
+            );
+        }
         $label = PHPUIKit::label($this->label)->attr("for {$this->name}")->unfold();
-        $select = PHPUIKit::select(
-            ...$this->content->each(function($option) {
+        $select = PHPUIKit::select(...$this->content->each(function($option) {
                 if (Type::isArray($option)) {
                     $group = Shoop::array($option);
                     $label = $group->first;
@@ -53,6 +79,19 @@ class Select extends HtmlElement
     private function option($option)
     {
         list($value, $title) = Shoop::string($option)->divide(" ", false, 2);
+        if ($this->type === "radio") {
+            $label = PHPUIKit::label($title)->attr("for {$value}");
+            $radio = PHPUIKit::input()->attr(
+                "type radio",
+                "name {$this->name}",
+                "value {$value}",
+                "id {$value}"
+            );
+            if ($this->value === $value) {
+                $radio = $radio->attr(...$this->attributes()->plus("checked checked"));
+            }
+            return $label . $radio;
+        }
         return ($this->value === $value)
             ? PHPUIKit::option($title)->attr("value {$value}", "selected selected")
             : PHPUIKit::option($title)->attr("value {$value}");
