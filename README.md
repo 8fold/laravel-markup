@@ -35,3 +35,9 @@ use Eightfold\LaravelMarkup\UIKit;
 ```
 
 In some cases, the classes and methods will be named the same and use similar, if not the same, argument list.
+
+## Details
+
+To create a common, helpful pattern all form controls are wrapped in a block-level element; usually a `fieldset` or `div`. This encapsulates a labelling element and one or more field inputs along with optional errors, short messaging, and counters.
+
+We define a form control as being one or more elements a user interacts with to enter data. Therefore, hidden inputs, buttons, and the form itself are not considered form controls.
