@@ -17,13 +17,22 @@ class UIKit extends PHPUIKit
 
     static public function select(string $label, string $name)
     {
+        // TODO: Most likely going to want a way to hand query strings:
+        // request()->query($name) === $id in previous implementations
         $class = static::classFor("select");
         if (old($name) === null) {
-            return $class::fold($label, $name, "");
+            $class = $class::fold($label, $name);
+
+        } else {
+            $class = $class::fold($label, $name, old($name));
+
         }
-        // TODO: Most likely going to want a way to hand query strings:
-        // request()->queray($name) === $id in previous implementations
-        return $class::fold($label, $name, old($name));
+
+        if (session()->get("errors") === null or session()->get("errors")->first($name) === null) {
+            return $class;
+        }
+
+        return $class->errorMessage(session()->get("errors")->first($name));
     }
 
     static public function quickChangeNavigation(
@@ -36,8 +45,6 @@ class UIKit extends PHPUIKit
         if (old($name) === null) {
             return $class::fold($methodAction, $label, $name);
         }
-        // TODO: Most likely going to want a way to hand query strings:
-        // request()->queray($name) === $id in previous implementations
         return $class::fold($methodAction, $label, $name, old($name));
     }
 
