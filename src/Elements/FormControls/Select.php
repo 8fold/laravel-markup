@@ -24,12 +24,6 @@ class Select extends FormControl
         return $this;
     }
 
-    // public function optional(bool $optional = true)
-    // {
-    //     $this->required = ! $optional;
-    //     return $this;
-    // }
-
     public function radio()
     {
         $this->type = "radio";
@@ -52,11 +46,18 @@ class Select extends FormControl
 
                     }
                 });
-            return PHPUIKit::fieldset(
+
+            $base = PHPUIKit::fieldset(
                 PHPUIKit::legend($this->label),
                 PHPUIKit::listWith(...$options)
-            )->attr("is form-control");
+            );
+
+            if (Shoop::string($this->errorMessage())->isNotEmpty) {
+               return $base->attr("is form-control-with-errors");
+            }
+            return $base->attr("is form-control");
         }
+
         $label = PHPUIKit::label($this->label)->attr("for {$this->name}")->unfold();
         $select = PHPUIKit::select(...$this->content->each(function($option) {
                 if (Type::isArray($option)) {
@@ -77,7 +78,11 @@ class Select extends FormControl
             $select = $select->attr(...$this->attributes()->plus("required required"));
         }
 
-        return PHPUIKit::div($label . $select)->attr("is form-control");
+        $base = PHPUIKit::div($label . $select);
+        if (Shoop::string($this->errorMessage())->isNotEmpty) {
+           return $base->attr("is form-control-with-errors");
+        }
+        return $base->attr("is form-control");
     }
 
     private function option($option)
