@@ -38,6 +38,10 @@ class MainTest extends TestCase
         $expected = '<div is="form-control"><label id="counter-label" for="counter">Counter</label><input id="counter" type="text" name="counter" aria-describedby="counter-label" maxlength="254"><span id="counter-counter" aria-live="polite"><i>254</i> characters remaining</span></div>';
         $actual = UIKit::text("Counter", "counter")->hasCounter();
         $this->assertEquals($expected, $actual->unfold());
+
+        $expected = '<div is="form-control"><label id="counter-label" for="counter">Counter</label><input id="counter" class="long-text" type="text" name="counter" aria-describedby="counter-label" maxlength="254"></div>';
+        $actual = UIKit::text("Counter", "counter")->attr("class long-text");
+        $this->assertEquals($expected, $actual->unfold());
     }
 
     public function testInputEmail()

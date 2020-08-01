@@ -67,18 +67,20 @@ class Text extends FormControl
     public function input()
     {
         if ($this->type === "textarea") {
-            $input = PHPUIKit::textarea($this->value)->attr(
-                "id {$this->name}",
-                "name {$this->name}",
-                "aria-describedby {$this->name}-label"
+            $input = PHPUIKit::textarea($this->value)->attr(...$this->attributes()->plus(
+                    "id {$this->name}",
+                    "name {$this->name}",
+                    "aria-describedby {$this->name}-label"
+                )
             );
 
         } else {
-            $input = PHPUIKit::input()->attr(
-                "id {$this->name}",
-                "name {$this->name}",
-                "type {$this->type}",
-                "aria-describedby {$this->name}-label"
+            $input = PHPUIKit::input()->attr(...$this->attributes()->plus(
+                    "id {$this->name}",
+                    "name {$this->name}",
+                    "type {$this->type}",
+                    "aria-describedby {$this->name}-label"
+                )
             );
 
         }
