@@ -28,6 +28,10 @@ class MainTest extends TestCase
         $actual = UIKit::select("Select", "select");
         $this->assertEquals($expected, $actual->unfold());
 
+        $expected = '<label for="select">Select</label><select id="select" name="select"></select>';
+        $actual = UIKit::select("Select", "select")->optional();
+        $this->assertEquals($expected, $actual->unfold());
+
         $expected = '<label for="select">Select</label><select id="select" name="select" required><option value="value1">Option A</option><option value="value2">Option B</option></select>';
         $actual = UIKit::select("Select", "select")
             ->options(

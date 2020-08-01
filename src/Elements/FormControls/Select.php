@@ -15,6 +15,8 @@ class Select extends HtmlElement
     private $name = "select";
     private $value = "";
 
+    private $required = true;
+
     private $type = "dropdown";
 
     public function __construct(string $label, string $name, string $value = "")
@@ -28,6 +30,12 @@ class Select extends HtmlElement
     public function options(...$options)
     {
         $this->content = Shoop::array($options);
+        return $this;
+    }
+
+    public function optional(bool $optional = true)
+    {
+        $this->required = ! $optional;
         return $this;
     }
 
@@ -72,8 +80,13 @@ class Select extends HtmlElement
                 }
                 return $this->option($option);
             })
-        )->attr("id {$this->name}", "name {$this->name}", "required required")->unfold();
-        return $label . $select;
+        )->attr("id {$this->name}", "name {$this->name}");
+
+        if ($this->required) {
+            $select = $select->attr(...$this->attributes()->plus("required required"));
+        }
+
+        return $label . $select->unfold();
     }
 
     private function option($option)
@@ -85,12 +98,17 @@ class Select extends HtmlElement
                 "type radio",
                 "name {$this->name}",
                 "value {$value}",
-                "id {$value}",
-                "required required"
+                "id {$value}"
             );
+
+            if ($this->required) {
+                $radio = $radio->attr(...$this->attributes()->plus("required required"));
+            }
+
             if ($this->value === $value) {
                 $radio = $radio->attr(...$this->attributes()->plus("checked checked"));
             }
+
             return $label . $radio;
         }
 
@@ -98,6 +116,7 @@ class Select extends HtmlElement
         if ($this->value === $value) {
             $option = $option->attr(...$this->attributes()->plus("selected selected"));
         }
+
         return $option;
     }
 }
