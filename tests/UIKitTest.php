@@ -8,6 +8,7 @@ use Orchestra\Testbench\BrowserKit\TestCase;
 use Eightfold\LaravelMarkup\UIKit;
 use Eightfold\LaravelMarkup\Elements\FormControls\Select;
 use Eightfold\LaravelMarkup\Elements\Navigations\QuickChangeNavigation;
+use Eightfold\LaravelMarkup\Elements\FormControls\TextLong;
 
 class MainTest extends TestCase
 {
@@ -34,13 +35,21 @@ class MainTest extends TestCase
 
     public function testInputEmail()
     {
-        $expected = '<div is="form-control"><label id="email-label" for="email">Email address</label><input id="email" name="email" aria-describedby="email-label" maxlength="254"></div>';
-        $actual = UIKit::inputEmail();
+        $expected = '<div is="form-control"><label id="email-label" for="email">Email address</label><input id="email" type="email" name="email" aria-describedby="email-label" maxlength="254"></div>';
+        $actual = UIKit::text("Email address", "email")->email();
         $this->assertEquals($expected, $actual->unfold());
 
-        $expected = '<div is="form-control"><label id="email-label" for="email">Email address</label><input id="email" name="email" aria-describedby="email-label" maxlength="254" placeholder="admin@8fold.dev"></div>';
-        $actual = UIKit::inputEmail()
+        $expected = '<div is="form-control"><label id="email-label" for="email">Email address</label><input id="email" type="email" name="email" aria-describedby="email-label" maxlength="254" placeholder="admin@8fold.dev"></div>';
+        $actual = UIKit::text("Email address", "email")->email()
             ->placeholder("admin@8fold.dev");
+        $this->assertEquals($expected, $actual->unfold());
+    }
+
+    public function testTextarea()
+    {
+        $expected = '<div is="form-control"><label id="comment-label" for="comment">Comment</label><textarea id="comment" name="comment" aria-describedby="comment-label" maxlength="254">hello</textarea></div>';
+        $actual = UIKit::text("Comment", "comment")
+            ->value("hello")->long();
         $this->assertEquals($expected, $actual->unfold());
     }
 
