@@ -41,59 +41,20 @@ class UIKit extends PHPUIKit
         return $class::fold($methodAction, $label, $name, old($name));
     }
 
-    static public function inputEmail(string $label = "Email address", string $name = "email")
+    static public function text(string $label, string $name)
     {
-        $class = static::classFor("inputEmail");
+        $class = static::classFor("text");
         if (old($name) === null) {
             return $class::fold($label, $name);
         }
         return $class::fold($label, $name, old($name));
     }
 
-    // static public function __callStatic(string $element, array $args)
-    // {
-    //     if ($element === "data_path") {
-    //         $basePath = explode("/", base_path());
-    //         array_pop($basePath);
-    //         $basePath = implode("/", $basePath);
-    //         $dataPath = $basePath ."/data";
-    //         return $dataPath;
-    //     }
-
-    //     $class = '';
-    //     if (array_key_exists($element, self::CLASSES)) {
-    //         $class = self::CLASSES[$element];
-    //     }
-
-    //     if (strlen($class) === 0) {
-    //         return parent::$element(...$args);
-    //     }
-
-    //     if ($element === 'webView') {
-    //         $title = $args[0];
-    //         unset($args[0]);
-
-    //         return new $class($title, ...$args);
-    //     }
-
-    //     if ($element === 'form') {
-    //         $methodAction = $args[0];
-    //         unset($args[0]);
-    //         return new $class($methodAction, ...$args);
-    //     }
-
-    //     if ($element === 'textInput' || $element === 'link') {
-    //         return new $class($args[0], $args[1]);
-    //     }
-
-    //     return new $class(...$args);
-    // }
-
     static public function classFor(string $method): string
     {
         $map = static::classMap(); // essentially cache to run once
         return $map->hasMember($method, function($result, $map) use ($method) {
-            return ($result->unfold()) ? $map->{$method} : "";
+            return ($result->unfold()) ? $map->{$method} : parent::{$method}();
         });
     }
 
@@ -105,7 +66,7 @@ class UIKit extends PHPUIKit
             $prefix->plus("Forms", "Form"), "form",
             $prefix->plus("Navigations", "QuickChangeNavigation"), "quickChangeNavigation",
             $prefix->plus("FormControls", "Select"), "select",
-            $prefix->plus("FormControls", "InputEmail"), "inputEmail"
+            $prefix->plus("FormControls", "Text"), "text"
 
         )->each(function($class, $method) use (&$map) {
             $class = $class->join("\\");
