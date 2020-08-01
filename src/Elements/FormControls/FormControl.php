@@ -5,6 +5,7 @@ namespace Eightfold\LaravelMarkup\Elements\FormControls;
 use Eightfold\Markup\Html\Elements\HtmlElement;
 
 use Eightfold\Shoop\Shoop;
+use Eightfold\Markup\UIKit as PHPUIKit;
 
 abstract class FormControl extends HtmlElement implements FormControlInterface
 {
@@ -15,6 +16,8 @@ abstract class FormControl extends HtmlElement implements FormControlInterface
     protected $label = "Select";
     protected $name = "select";
     protected $value = "";
+
+    private $errorMessage = "";
 
     public function optional(bool $optional = true)
     {
@@ -38,5 +41,25 @@ abstract class FormControl extends HtmlElement implements FormControlInterface
             return $this;
         }
         return $this->value;
+    }
+
+    public function errorMessage(string $message = "")
+    {
+        if (Shoop::string($message)->isNotEmpty) {
+            $this->errorMessage = $message;
+            return $this;
+        }
+        return $this->errorMessage;
+    }
+
+    protected function error()
+    {
+        if (Shoop::string($this->errorMessage())->isNotEmpty) {
+            return PHPUIKit::span($this->errorMessage())->attr(
+                "is form-control-error-message",
+                "id {$this->name}-error-message",
+            );
+        }
+        return "";
     }
 }

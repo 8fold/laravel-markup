@@ -96,11 +96,7 @@ class Text extends FormControl
         if ($this->type !== "textarea" and Shoop::string($this->value)->isNotEmpty) {
             $input = $input->attr(...$input->attributes()->plus("value {$this->value}"));
         }
-        return $input;
-    }
 
-    public function unfold(): string
-    {
         $counter = (! $this->hasCounter)
             ? ""
             : PHPUIKit::span(
@@ -108,10 +104,15 @@ class Text extends FormControl
                 " characters remaining"
             )->attr("id {$this->name}-counter", "aria-live polite");
 
-        return PHPUIKit::div(
-            $this->label(),
-            $this->input(),
-            $counter
-        )->attr("is form-control");
+        return Shoop::array([$this->error(), $input, $counter]);
+    }
+
+    public function unfold(): string
+    {
+        $base = PHPUIKit::div($this->label(), ...$this->input());
+        if (Shoop::string($this->errorMessage())->isNotEmpty) {
+            return $base->attr("is form-control-with-errors");
+        }
+        return $base->attr("is form-control");
     }
 }
