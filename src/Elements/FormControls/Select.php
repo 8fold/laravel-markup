@@ -32,33 +32,46 @@ class Select extends FormControl
 
     public function unfold(): string
     {
-        $select = "";
-        if ($this->type === "radio") {
-            $options = Shoop::array([]);
-            $this->content->each(function($option) use (&$options) {
-                    if (Type::isArray($option)) {
-                        Shoop::this($option)->each(function($option) use (&$options) {
-                            $options = $options->plus($this->option($option));
-                        });
+        $base = "";
+        switch ($this->type) {
+            case "radio":
+                $base = $this->radioControl();
+                break;
 
-                    } else {
-                        $options = $options->plus($this->option($option));
-
-                    }
-                });
-
-            $base = PHPUIKit::fieldset(
-                PHPUIKit::legend($this->label),
-                PHPUIKit::listWith(...$options)
-            );
-
-            if (Shoop::string($this->errorMessage())->isNotEmpty) {
-               return $base->attr("is form-control-with-errors");
-            }
-            return $base->attr("is form-control");
+            default:
+                $base = $this->selectControl();
+                break;
         }
 
-        $label = PHPUIKit::label($this->label)->attr("for {$this->name}")->unfold();
+        if (Shoop::string($this->errorMessage())->isNotEmpty) {
+           return $base->attr("is form-control-with-errors");
+        }
+        return $base->attr("is form-control");
+    }
+
+    private function radioControl()
+    {
+        $options = Shoop::array([]);
+        $this->content->each(function($option) use (&$options) {
+            if (Type::isArray($option)) {
+                Shoop::this($option)->each(function($option) use (&$options) {
+                    $options = $options->plus($this->option($option));
+                });
+
+            } else {
+                $options = $options->plus($this->option($option));
+
+            }
+        });
+
+        return PHPUIKit::fieldset(
+            PHPUIKit::legend($this->label),
+            PHPUIKit::listWith(...$options)
+        );
+    }
+
+    private function selectControl()
+    {
         $select = PHPUIKit::select(...$this->content->each(function($option) {
                 if (Type::isArray($option)) {
                     $group = Shoop::array($option);
@@ -78,11 +91,7 @@ class Select extends FormControl
             $select = $select->attr(...$this->attributes()->plus("required required"));
         }
 
-        $base = PHPUIKit::div($label . $select);
-        if (Shoop::string($this->errorMessage())->isNotEmpty) {
-           return $base->attr("is form-control-with-errors");
-        }
-        return $base->attr("is form-control");
+        return PHPUIKit::div($this->label(), $this->error(), $select);
     }
 
     private function option($option)
