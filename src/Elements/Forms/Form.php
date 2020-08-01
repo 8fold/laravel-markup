@@ -14,7 +14,7 @@ class Form extends HtmlElement
     private $method = "post";
     private $action = "/";
 
-    private $submitLabel = "Submit";
+    protected $submitLabel = "Submit";
 
     public function __construct($methodAction, ...$content)
     {
@@ -27,8 +27,11 @@ class Form extends HtmlElement
         ]);
     }
 
-    public function submitLabel(string $label = "Submit")
+    public function submitLabel(string $label = "")
     {
+        if (strlen($label) === 0) {
+            $label = "Submit";
+        }
         $this->submitLabel = $label;
         return $this;
     }

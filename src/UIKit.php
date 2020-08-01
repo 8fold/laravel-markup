@@ -21,6 +21,17 @@ class UIKit extends PHPUIKit
         return $class::fold($label, $name, $value);
     }
 
+    static public function quickChangeNavigation(
+        string $methodAction = "post /",
+        string $label = "navigation",
+        string $name = "quick-change-nav",
+        string $value = ""
+    )
+    {
+        $class = static::classFor("quickChangeNavigation");
+        return $class::fold($methodAction, $label, $name, $value);
+    }
+
     // static public function __callStatic(string $element, array $args)
     // {
     //     if ($element === "data_path") {
@@ -74,6 +85,7 @@ class UIKit extends PHPUIKit
         $map = Shoop::dictionary([]);
         $compiler = Shoop::dictionary([])->plus(
             $prefix->plus("Forms", "Form"), "form",
+            $prefix->plus("Navigations", "QuickChangeNavigation"), "quickChangeNavigation",
             $prefix->plus("FormControls", "Select"), "select"
 
         )->each(function($class, $method) use (&$map) {
