@@ -65,7 +65,7 @@ class Select extends HtmlElement
             return PHPUIKit::fieldset(
                 PHPUIKit::legend($this->label),
                 PHPUIKit::listWith(...$options)
-            );
+            )->attr("is form-control");
         }
         $label = PHPUIKit::label($this->label)->attr("for {$this->name}")->unfold();
         $select = PHPUIKit::select(...$this->content->each(function($option) {
@@ -87,7 +87,7 @@ class Select extends HtmlElement
             $select = $select->attr(...$this->attributes()->plus("required required"));
         }
 
-        return $label . $select->unfold();
+        return PHPUIKit::div($label . $select)->attr("is form-control");
     }
 
     private function option($option)

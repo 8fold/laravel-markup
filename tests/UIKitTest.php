@@ -21,7 +21,7 @@ class MainTest extends TestCase
 
     public function testQuickChangeNavigation()
     {
-        $expected = '<nav id="quick-change-nav"><form action="/" method="post"><label for="quick-change">quick change</label><select id="quick-change" name="quick-change" required><option value="value1">Option A</option><option value="value2" selected>Option B</option></select><input type="hidden" name="_token" value="testing"><button>Go!</button></form></nav>';
+        $expected = '<nav id="quick-change-nav"><form action="/" method="post"><div is="form-control"><label for="quick-change">quick change</label><select id="quick-change" name="quick-change" required><option value="value1">Option A</option><option value="value2" selected>Option B</option></select></div><input type="hidden" name="_token" value="testing"><button>Go!</button></form></nav>';
         $actual = QuickChangeNavigation::fold(
             "post /",
             "quick change",
@@ -34,15 +34,15 @@ class MainTest extends TestCase
 
     public function testSelect()
     {
-        $expected = '<label for="select">Select</label><select id="select" name="select" required></select>';
+        $expected = '<div is="form-control"><label for="select">Select</label><select id="select" name="select" required></select></div>';
         $actual = UIKit::select("Select", "select");
         $this->assertEquals($expected, $actual->unfold());
 
-        $expected = '<label for="select">Select</label><select id="select" name="select"></select>';
+        $expected = '<div is="form-control"><label for="select">Select</label><select id="select" name="select"></select></div>';
         $actual = UIKit::select("Select", "select")->optional();
         $this->assertEquals($expected, $actual->unfold());
 
-        $expected = '<label for="select">Select</label><select id="select" name="select" required><option value="value1">Option A</option><option value="value2">Option B</option></select>';
+        $expected = '<div is="form-control"><label for="select">Select</label><select id="select" name="select" required><option value="value1">Option A</option><option value="value2">Option B</option></select></div>';
         $actual = UIKit::select("Select", "select")
             ->options(
                 "value1 Option A",
@@ -50,7 +50,7 @@ class MainTest extends TestCase
             );
         $this->assertEquals($expected, $actual->unfold());
 
-        $expected = '<label for="select">Select</label><select id="select" name="select" required><optgroup label="optgroup label"><option value="value1">Option A</option><option value="value2">Option B</option></optgroup><option value="value3">Option C</option></select>';
+        $expected = '<div is="form-control"><label for="select">Select</label><select id="select" name="select" required><optgroup label="optgroup label"><option value="value1">Option A</option><option value="value2">Option B</option></optgroup><option value="value3">Option C</option></select></div>';
         $actual = UIKit::select("Select", "select")
             ->options(
                 [
@@ -63,7 +63,7 @@ class MainTest extends TestCase
         $this->assertEquals($expected, $actual->unfold());
 
         session("select", "value2");
-        $expected = '<label for="select">Select</label><select id="select" name="select" required><option value="value1">Option A</option><option value="value2" selected>Option B</option></select>';
+        $expected = '<div is="form-control"><label for="select">Select</label><select id="select" name="select" required><option value="value1">Option A</option><option value="value2" selected>Option B</option></select></div>';
         $actual = Select::fold("Select", "select", "value2")
             ->options(
                 "value1 Option A",
@@ -71,7 +71,7 @@ class MainTest extends TestCase
             );
         $this->assertEquals($expected, $actual->unfold());
 
-        $expected = '<fieldset><legend>Select</legend><ul><li><label for="optgroup">label</label><input id="optgroup" type="radio" name="select" value="optgroup" checked required></li><li><label for="value1">Option A</label><input id="value1" type="radio" name="select" value="value1" required></li><li><label for="value2">Option B</label><input id="value2" type="radio" name="select" value="value2" required></li><li><label for="value3">Option C</label><input id="value3" type="radio" name="select" value="value3" required></li></ul></fieldset>';
+        $expected = '<fieldset is="form-control"><legend>Select</legend><ul><li><label for="optgroup">label</label><input id="optgroup" type="radio" name="select" value="optgroup" checked required></li><li><label for="value1">Option A</label><input id="value1" type="radio" name="select" value="value1" required></li><li><label for="value2">Option B</label><input id="value2" type="radio" name="select" value="value2" required></li><li><label for="value3">Option C</label><input id="value3" type="radio" name="select" value="value3" required></li></ul></fieldset>';
         $actual = Select::fold("Select", "select", "optgroup")
             ->options(
                 [
@@ -100,7 +100,7 @@ class MainTest extends TestCase
         $actual = UIKit::form()->attr("id form", "action /something", "method get");
         $this->assertEquals($expected, $actual->unfold());
 
-        $expected = '<form id="form" action="/" method="post"><label for="select">Select</label><select id="select" name="select" required><option value="value1">Option A</option><option value="value2">Option B</option></select><input type="hidden" name="_token" value="testing"><button>Submit</button></form>';
+        $expected = '<form id="form" action="/" method="post"><div is="form-control"><label for="select">Select</label><select id="select" name="select" required><option value="value1">Option A</option><option value="value2">Option B</option></select></div><input type="hidden" name="_token" value="testing"><button>Submit</button></form>';
         $actual = UIKit::form(
             "post /",
             UIKit::select("Select", "select")
