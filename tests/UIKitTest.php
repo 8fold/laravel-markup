@@ -9,6 +9,19 @@ use Eightfold\LaravelMarkup\UIKit;
 
 class MainTest extends TestCase
 {
+    public function testQuickChangeNavigation()
+    {
+        $expected = '<nav id="quick-change-nav"><form action="/" method="post"><label for="quick-change">quick change</label><select id="quick-change" name="quick-change"><option value="value1">Option A</option><option value="value2" selected>Option B</option></select><input type="hidden" name="_token" value="testing"><button>Go!</button></form></nav>';
+        $actual = UIKit::quickChangeNavigation(
+            "post /",
+            "quick change",
+            "quick-change",
+            "value2"
+        )->options("value1 Option A", "value2 Option B")
+        ->submitLabel("Go!")->attr("id quick-change-nav");
+        $this->assertEquals($expected, $actual->unfold());
+    }
+
     public function testSelect()
     {
         $expected = '<label for="select">Select</label><select id="select" name="select"></select>';
@@ -85,7 +98,7 @@ class MainTest extends TestCase
 
     public function testUIKitClassMap()
     {
-        $expected = 2;
+        $expected = 3;
         $actual = UIKit::classMap()->count;
         $this->assertEquals($expected, $actual);
 
