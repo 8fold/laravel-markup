@@ -32,6 +32,18 @@ class MainTest extends TestCase
         $this->assertEquals($expected, $actual->unfold());
     }
 
+    public function testInputEmail()
+    {
+        $expected = '<div is="form-control"><label id="email-label" for="email">Email address</label><input id="email" name="email" aria-describedby="email-label" maxlength="254"></div>';
+        $actual = UIKit::inputEmail();
+        $this->assertEquals($expected, $actual->unfold());
+
+        $expected = '<div is="form-control"><label id="email-label" for="email">Email address</label><input id="email" name="email" aria-describedby="email-label" maxlength="254" placeholder="admin@8fold.dev"></div>';
+        $actual = UIKit::inputEmail()
+            ->placeholder("admin@8fold.dev");
+        $this->assertEquals($expected, $actual->unfold());
+    }
+
     public function testSelect()
     {
         $expected = '<div is="form-control"><label for="select">Select</label><select id="select" name="select" required></select></div>';
@@ -125,7 +137,7 @@ class MainTest extends TestCase
 
     public function testUIKitClassMap()
     {
-        $expected = 3;
+        $expected = 4;
         $actual = UIKit::classMap()->count;
         $this->assertEquals($expected, $actual);
 

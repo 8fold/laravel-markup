@@ -2,26 +2,16 @@
 
 namespace Eightfold\LaravelMarkup\Elements\FormControls;
 
-use Eightfold\Markup\Html\Elements\HtmlElement;
-
 use Eightfold\Markup\UIKit as PHPUIKit;
 
 use Eightfold\Shoop\Shoop;
 use Eightfold\Shoop\Helpers\Type;
 
-class Select extends HtmlElement
+class Select extends FormControl
 {
-    private $label = "Select";
-    private $name = "select";
-    private $value = "";
-
-    private $required = true;
-
-    private $type = "dropdown";
-
-    // TODO: replace $value because Laravel has old()
     public function __construct(string $label, string $name, string $value = "")
     {
+        $this->type = "dropdown";
         $this->label = $label;
         $this->name = $name;
         $this->value = $value;
@@ -34,11 +24,11 @@ class Select extends HtmlElement
         return $this;
     }
 
-    public function optional(bool $optional = true)
-    {
-        $this->required = ! $optional;
-        return $this;
-    }
+    // public function optional(bool $optional = true)
+    // {
+    //     $this->required = ! $optional;
+    //     return $this;
+    // }
 
     public function radio()
     {
