@@ -72,7 +72,7 @@ class Select extends HtmlElement
                 }
                 return $this->option($option);
             })
-        )->attr("id {$this->name}", "name {$this->name}")->unfold();
+        )->attr("id {$this->name}", "name {$this->name}", "required required")->unfold();
         return $label . $select;
     }
 
@@ -85,15 +85,19 @@ class Select extends HtmlElement
                 "type radio",
                 "name {$this->name}",
                 "value {$value}",
-                "id {$value}"
+                "id {$value}",
+                "required required"
             );
             if ($this->value === $value) {
                 $radio = $radio->attr(...$this->attributes()->plus("checked checked"));
             }
             return $label . $radio;
         }
-        return ($this->value === $value)
-            ? PHPUIKit::option($title)->attr("value {$value}", "selected selected")
-            : PHPUIKit::option($title)->attr("value {$value}");
+
+        $option = PHPUIKit::option($title)->attr("value {$value}");
+        if ($this->value === $value) {
+            $option = $option->attr(...$this->attributes()->plus("selected selected"));
+        }
+        return $option;
     }
 }
