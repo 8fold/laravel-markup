@@ -53,6 +53,8 @@ class Select extends HtmlElement
     private function option($option)
     {
         list($value, $title) = Shoop::string($option)->divide(" ", false, 2);
-        return PHPUIKit::option($title)->attr("value {$value}");
+        return ($this->value === $value)
+            ? PHPUIKit::option($title)->attr("value {$value}", "selected selected")
+            : PHPUIKit::option($title)->attr("value {$value}");
     }
 }

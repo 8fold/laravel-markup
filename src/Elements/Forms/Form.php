@@ -27,6 +27,12 @@ class Form extends HtmlElement
         ]);
     }
 
+    public function submitLabel(string $label = "Submit")
+    {
+        $this->submitLabel = $label;
+        return $this;
+    }
+
     public function unfold(): string
     {
         $token = csrf_token();
