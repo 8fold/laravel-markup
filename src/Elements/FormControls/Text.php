@@ -59,11 +59,6 @@ class Text extends FormControl
         return $this;
     }
 
-    public function label()
-    {
-        return PHPUIKit::label($this->label)->attr("id {$this->name}-label", "for {$this->name}");
-    }
-
     public function input()
     {
         if ($this->type === "textarea") {

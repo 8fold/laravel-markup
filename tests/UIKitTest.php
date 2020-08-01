@@ -25,7 +25,7 @@ class MainTest extends TestCase
 
     public function testQuickChangeNavigation()
     {
-        $expected = '<nav id="quick-change-nav"><form action="/" method="post"><div is="form-control"><label for="quick-change">quick change</label><select id="quick-change" name="quick-change" required><option value="value1">Option A</option><option value="value2" selected>Option B</option></select></div><input type="hidden" name="_token" value="testing"><button>Go!</button></form></nav>';
+        $expected = '<nav id="quick-change-nav"><form action="/" method="post"><div is="form-control"><label id="quick-change-label" for="quick-change">quick change</label><select id="quick-change" name="quick-change" required><option value="value1">Option A</option><option value="value2" selected>Option B</option></select></div><input type="hidden" name="_token" value="testing"><button>Go!</button></form></nav>';
         $actual = QuickChangeNavigation::fold(
             "post /",
             "quick change",
@@ -38,18 +38,18 @@ class MainTest extends TestCase
 
     public function testText()
     {
-        // $expected = '<div is="form-control"><label id="counter-label" for="counter">Counter</label><input id="counter" type="text" name="counter" aria-describedby="counter-label" maxlength="254"><span id="counter-counter" aria-live="polite"><i>254</i> characters remaining</span></div>';
-        // $actual = UIKit::text("Counter", "counter")->hasCounter();
-        // $this->assertEquals($expected, $actual->unfold());
+        $expected = '<div is="form-control"><label id="counter-label" for="counter">Counter</label><input id="counter" type="text" name="counter" aria-describedby="counter-label" maxlength="254"><span id="counter-counter" aria-live="polite"><i>254</i> characters remaining</span></div>';
+        $actual = UIKit::text("Counter", "counter")->hasCounter();
+        $this->assertEquals($expected, $actual->unfold());
 
-        // $expected = '<div is="form-control"><label id="counter-label" for="counter">Counter</label><input id="counter" class="long-text" type="text" name="counter" aria-describedby="counter-label" maxlength="254"></div>';
-        // $actual = UIKit::text("Counter", "counter")->attr("class long-text");
-        // $this->assertEquals($expected, $actual->unfold());
+        $expected = '<div is="form-control"><label id="counter-label" for="counter">Counter</label><input id="counter" class="long-text" type="text" name="counter" aria-describedby="counter-label" maxlength="254"></div>';
+        $actual = UIKit::text("Counter", "counter")->attr("class long-text");
+        $this->assertEquals($expected, $actual->unfold());
 
         $expected = '<div is="form-control-with-errors"><label id="counter-label" for="counter">Counter</label><span is="form-control-error-message" id="counter-error-message">This is our error.</span><input id="counter" type="text" name="counter" aria-describedby="counter-label" maxlength="254"></div>';
-        // $actual = UIKit::text("Counter", "counter")
-        //     ->errorMessage("This is our error.");
-        // $this->assertEquals($expected, $actual->unfold());
+        $actual = UIKit::text("Counter", "counter")
+            ->errorMessage("This is our error.");
+        $this->assertEquals($expected, $actual->unfold());
 
         $errorBag = (new ViewErrorBag)
             ->put("default", new MessageBag([
@@ -83,15 +83,25 @@ class MainTest extends TestCase
 
     public function testSelect()
     {
-        $expected = '<div is="form-control"><label for="select">Select</label><select id="select" name="select" required></select></div>';
+        $expected = '<div is="form-control"><label id="select-label" for="select">Select</label><select id="select" name="select" required></select></div>';
         $actual = UIKit::select("Select", "select");
         $this->assertEquals($expected, $actual->unfold());
 
-        $expected = '<div is="form-control"><label for="select">Select</label><select id="select" name="select"></select></div>';
+        $errorBag = (new ViewErrorBag)
+            ->put("default", new MessageBag([
+                "select" => ["This is our error."]
+            ])
+        );
+        session()->put("errors", $errorBag);
+        $expected = '<div is="form-control"><label id="select-label" for="select">Select</label><select id="select" name="select"></select></div>';
         $actual = UIKit::select("Select", "select")->optional();
         $this->assertEquals($expected, $actual->unfold());
 
-        $expected = '<div is="form-control"><label for="select">Select</label><select id="select" name="select" required><option value="value1">Option A</option><option value="value2">Option B</option></select></div>';
+        $expected = '<div is="form-control"><label id="select-label" for="select">Select</label><select id="select" name="select" required></select></div>';
+        $actual = UIKit::select("Select", "select");
+        $this->assertEquals($expected, $actual->unfold());
+
+        $expected = '<div is="form-control"><label id="select-label" for="select">Select</label><select id="select" name="select" required><option value="value1">Option A</option><option value="value2">Option B</option></select></div>';
         $actual = UIKit::select("Select", "select")
             ->options(
                 "value1 Option A",
@@ -99,7 +109,7 @@ class MainTest extends TestCase
             );
         $this->assertEquals($expected, $actual->unfold());
 
-        $expected = '<div is="form-control"><label for="select">Select</label><select id="select" name="select" required><optgroup label="optgroup label"><option value="value1">Option A</option><option value="value2">Option B</option></optgroup><option value="value3">Option C</option></select></div>';
+        $expected = '<div is="form-control"><label id="select-label" for="select">Select</label><select id="select" name="select" required><optgroup label="optgroup label"><option value="value1">Option A</option><option value="value2">Option B</option></optgroup><option value="value3">Option C</option></select></div>';
         $actual = UIKit::select("Select", "select")
             ->options(
                 [
@@ -112,7 +122,7 @@ class MainTest extends TestCase
         $this->assertEquals($expected, $actual->unfold());
 
         session("select", "value2");
-        $expected = '<div is="form-control"><label for="select">Select</label><select id="select" name="select" required><option value="value1">Option A</option><option value="value2" selected>Option B</option></select></div>';
+        $expected = '<div is="form-control"><label id="select-label" for="select">Select</label><select id="select" name="select" required><option value="value1">Option A</option><option value="value2" selected>Option B</option></select></div>';
         $actual = Select::fold("Select", "select", "value2")
             ->options(
                 "value1 Option A",
@@ -149,7 +159,7 @@ class MainTest extends TestCase
         $actual = UIKit::form()->attr("id form", "action /something", "method get");
         $this->assertEquals($expected, $actual->unfold());
 
-        $expected = '<form id="form" action="/" method="post"><div is="form-control"><label for="select">Select</label><select id="select" name="select" required><option value="value1">Option A</option><option value="value2">Option B</option></select></div><input type="hidden" name="_token" value="testing"><button>Submit</button></form>';
+        $expected = '<form id="form" action="/" method="post"><div is="form-control"><label id="select-label" for="select">Select</label><select id="select" name="select" required><option value="value1">Option A</option><option value="value2">Option B</option></select></div><input type="hidden" name="_token" value="testing"><button>Submit</button></form>';
         $actual = UIKit::form(
             "post /",
             UIKit::select("Select", "select")

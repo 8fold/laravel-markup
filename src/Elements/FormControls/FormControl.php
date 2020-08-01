@@ -52,6 +52,11 @@ abstract class FormControl extends HtmlElement implements FormControlInterface
         return $this->errorMessage;
     }
 
+    public function label()
+    {
+        return PHPUIKit::label($this->label)->attr("id {$this->name}-label", "for {$this->name}");
+    }
+
     protected function error()
     {
         if (Shoop::string($this->errorMessage())->isNotEmpty) {
