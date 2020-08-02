@@ -120,7 +120,7 @@ class MainTest extends TestCase
             );
         $this->assertEquals($expected, $actual->unfold());
 
-        $expected = '<fieldset is="form-control"><legend>Select</legend><ul><li><label for="optgroup">label</label><input id="optgroup" type="radio" name="select" value="optgroup" checked required></li><li><label for="value1">Option A</label><input id="value1" type="radio" name="select" value="value1" required></li><li><label for="value2">Option B</label><input id="value2" type="radio" name="select" value="value2" required></li><li><label for="value3">Option C</label><input id="value3" type="radio" name="select" value="value3" required></li></ul></fieldset>';
+        $expected = '<fieldset is="form-control"><legend id="select-legend">Select</legend><ul><li><label for="optgroup">label</label><input id="optgroup" type="radio" name="select" value="optgroup" checked required></li><li><label for="value1">Option A</label><input id="value1" type="radio" name="select" value="value1" required></li><li><label for="value2">Option B</label><input id="value2" type="radio" name="select" value="value2" required></li><li><label for="value3">Option C</label><input id="value3" type="radio" name="select" value="value3" required></li></ul></fieldset>';
         $actual = Select::fold("Select", "select", "optgroup")
             ->options(
                 [
@@ -138,8 +138,8 @@ class MainTest extends TestCase
             ])
         );
         session()->put("errors", $errorBag);
-        $expected = '<div is="form-control-with-errors"><label id="select-label" for="select">Select</label><span is="form-control-error-message" id="select-error-message">This is our error.</span><select id="select" name="select"></select></div>';
-        $actual = UIKit::select("Select", "select")->optional();
+        $expected = '<fieldset is="form-control-with-errors"><legend id="select-legend">Select</legend><span is="form-control-error-message" id="select-error-message">This is our error.</span><ul><li><label for="test">error</label><input id="test" type="radio" name="select" value="test"></li></ul></fieldset>';
+        $actual = UIKit::select("Select", "select")->options("test error")->radio()->optional();
         $this->assertEquals($expected, $actual->unfold());
     }
 
