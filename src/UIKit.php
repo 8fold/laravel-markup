@@ -28,10 +28,9 @@ class UIKit extends PHPUIKit
 
         }
 
-        if (session()->get("errors") === null or session()->get("errors")->first($name) === null) {
-            return $class::fold($label, $name);
+        if (session()->get("errors") === null or session()->get("errors")->first($name) === "") {
+            return $class;
         }
-
         return $class->errorMessage(session()->get("errors")->first($name));
     }
 
@@ -91,26 +90,4 @@ class UIKit extends PHPUIKit
         });
         return $map;
     }
-
-    // const CLASSES = [
-    //       'webView'     => Elements\Pages\WebView::class,
-    //       'form'        => Elements\Forms\Form::class,
-    //       'emailInput'  => Elements\FormControls\InputEmail::class,
-    //       'textInput'   => Elements\FormControls\InputText::class,
-    //       'mathCaptcha' => Elements\FormControls\InputMathCaptcha::class,
-
-    //       'h2'         => Elements\Simple\H2::class,
-    //       'h3'         => Elements\Simple\H3::class,
-    //       'button'     => Elements\Simple\Button::class,
-
-    //       'header' => Elements\Compound\Header::class,
-    //       'footer' => Elements\Compound\Footer::class,
-
-    //       'appearances'           => Elements\Compound\Appearances::class,
-    //       'featuredPractitioners' => Elements\Compound\Practitioners::class,
-    //       'practitionerCard'      => Elements\Compound\PractitionerCard::class,
-
-    //       'newsletterForm'    => Elements\Compound\NewsletterForm::class,
-    //       'accountRaffleForm' => Elements\Compound\AccountRaffleForm::class
-    // ];
 }
