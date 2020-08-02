@@ -65,7 +65,8 @@ class Select extends FormControl
         });
 
         return PHPUIKit::fieldset(
-            PHPUIKit::legend($this->label),
+            PHPUIKit::legend($this->label)->attr("id {$this->name}-legend"),
+            $this->error(),
             PHPUIKit::listWith(...$options)
         );
     }
@@ -121,7 +122,6 @@ class Select extends FormControl
         if ($this->value === $value) {
             $option = $option->attr(...$this->attributes()->plus("selected selected"));
         }
-
         return $option;
     }
 }
