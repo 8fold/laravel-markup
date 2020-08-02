@@ -29,7 +29,7 @@ class UIKit extends PHPUIKit
         }
 
         if (session()->get("errors") === null or session()->get("errors")->first($name) === null) {
-            return $class;
+            return $class::fold($label, $name);
         }
 
         return $class->errorMessage(session()->get("errors")->first($name));
