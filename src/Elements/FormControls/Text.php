@@ -92,7 +92,7 @@ class Text extends FormControl
         }
 
         if ($this->required) {
-            $input = $radio->attr(...$this->attributes()->plus("required required"));
+            $input = $input->attr(...$this->attributes()->plus("required required"));
         }
 
         $counter = (! $this->hasCounter)
