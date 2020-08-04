@@ -77,7 +77,6 @@ class Text extends FormControl
                     "aria-describedby {$this->name}-label"
                 )
             );
-
         }
 
         if (Shoop::string($this->placeholder)->isNotEmpty) {
@@ -90,6 +89,10 @@ class Text extends FormControl
 
         if ($this->type !== "textarea" and Shoop::string($this->value)->isNotEmpty) {
             $input = $input->attr(...$input->attributes()->plus("value {$this->value}"));
+        }
+
+        if ($this->required) {
+            $input = $radio->attr(...$this->attributes()->plus("required required"));
         }
 
         $counter = (! $this->hasCounter)
