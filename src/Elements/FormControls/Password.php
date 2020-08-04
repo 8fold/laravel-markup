@@ -44,10 +44,10 @@ class Password extends FormControl
         }
 
         if ($this->required) {
-            $input = $radio->attr(...$this->attributes()->plus("required required"));
+            $input = $input->attr(...$this->attributes()->plus("required required"));
         }
 
-        return Shoop::array([$this->error(), $input, $counter]);
+        return Shoop::array([$this->error(), $input]);
     }
 
     public function unfold(): string
