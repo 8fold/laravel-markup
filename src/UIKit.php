@@ -92,7 +92,7 @@ class UIKit extends PHPUIKit
             $prefix->plus("Navigations", "QuickChangeNavigation"), "quickChangeNavigation",
             $prefix->plus("FormControls", "Select"), "select",
             $prefix->plus("FormControls", "Text"), "text",
-            $prefix->plus("FormControls", "Password"), "text"
+            $prefix->plus("FormControls", "Password"), "password"
 
         )->each(function($class, $method) use (&$map) {
             $class = $class->join("\\");
