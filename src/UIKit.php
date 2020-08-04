@@ -65,6 +65,16 @@ class UIKit extends PHPUIKit
         return $class->errorMessage(session()->get("errors")->first($name));
     }
 
+    static public function password(string $label, string $name)
+    {
+        $class = static::classFor("password");
+        if (session()->get("errors") === null or session()->get("errors")->first($name) === null) {
+            return $class;
+        }
+
+        return $class->errorMessage(session()->get("errors")->first($name));
+    }
+
     static public function classFor(string $method): string
     {
         $map = static::classMap(); // essentially cache to run once
@@ -81,7 +91,8 @@ class UIKit extends PHPUIKit
             $prefix->plus("Forms", "Form"), "form",
             $prefix->plus("Navigations", "QuickChangeNavigation"), "quickChangeNavigation",
             $prefix->plus("FormControls", "Select"), "select",
-            $prefix->plus("FormControls", "Text"), "text"
+            $prefix->plus("FormControls", "Text"), "text",
+            $prefix->plus("FormControls", "Password"), "text"
 
         )->each(function($class, $method) use (&$map) {
             $class = $class->join("\\");
