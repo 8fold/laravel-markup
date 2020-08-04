@@ -69,10 +69,10 @@ class UIKit extends PHPUIKit
     {
         $class = static::classFor("password");
         if (session()->get("errors") === null or session()->get("errors")->first($name) === null) {
-            return $class;
+            return $class::fold($label, $name);
         }
 
-        return $class->errorMessage(session()->get("errors")->first($name));
+        return $class::fold($lable, $name)->errorMessage(session()->get("errors")->first($name));
     }
 
     static public function classFor(string $method): string
