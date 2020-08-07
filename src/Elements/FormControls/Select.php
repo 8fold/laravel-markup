@@ -78,6 +78,12 @@ class Select extends FormControl
     {
         $select = PHPUIKit::select(...$this->content->each(function($option) {
                 if (Type::is($option, ESArray::class, "array")) {
+                    // Format: [
+                    //      "Group title",
+                    //      "/path Title",
+                    //      "/path/two Title Two",
+                    //      "..."
+                    // ]
                     $group = Shoop::array($option);
                     $label = $group->first;
                     $options = $group->dropFirst();
