@@ -42,11 +42,11 @@ class MainTest extends TestCase
         $actual = UIKit::text("Counter", "counter")->hasCounter();
         $this->assertEquals($expected, $actual->unfold());
 
-        $expected = '<div is="form-control"><label id="counter-label" for="counter">Counter</label><input id="counter" class="long-text" type="text" name="counter" aria-describedby="counter-label" maxlength="254"></div>';
+        $expected = '<div is="form-control"><label id="counter-label" for="counter">Counter</label><input id="counter" class="long-text" type="text" name="counter" aria-describedby="counter-label" maxlength="254" required></div>';
         $actual = UIKit::text("Counter", "counter")->attr("class long-text");
         $this->assertEquals($expected, $actual->unfold());
 
-        $expected = '<div is="form-control-with-errors"><label id="counter-label" for="counter">Counter</label><span is="form-control-error-message" id="counter-error-message">This is our error.</span><input id="counter" type="text" name="counter" aria-describedby="counter-label" maxlength="254"></div>';
+        $expected = '<div is="form-control-with-errors"><label id="counter-label" for="counter">Counter</label><span is="form-control-error-message" id="counter-error-message">This is our error.</span><input id="counter" type="text" name="counter" aria-describedby="counter-label" maxlength="254" required></div>';
         $actual = UIKit::text("Counter", "counter")
             ->errorMessage("This is our error.");
         $this->assertEquals($expected, $actual->unfold());
@@ -63,11 +63,11 @@ class MainTest extends TestCase
 
     public function testInputEmail()
     {
-        $expected = '<div is="form-control"><label id="email-label" for="email">Email address</label><input id="email" type="email" name="email" aria-describedby="email-label" maxlength="254"></div>';
+        $expected = '<div is="form-control"><label id="email-label" for="email">Email address</label><input id="email" type="email" name="email" aria-describedby="email-label" maxlength="254" required></div>';
         $actual = UIKit::text("Email address", "email")->email();
         $this->assertEquals($expected, $actual->unfold());
 
-        $expected = '<div is="form-control"><label id="email-label" for="email">Email address</label><input id="email" type="email" name="email" aria-describedby="email-label" maxlength="254" placeholder="admin@8fold.dev"></div>';
+        $expected = '<div is="form-control"><label id="email-label" for="email">Email address</label><input id="email" type="email" name="email" aria-describedby="email-label" maxlength="254" placeholder="admin@8fold.dev" required></div>';
         $actual = UIKit::text("Email address", "email")->email()
             ->placeholder("admin@8fold.dev");
         $this->assertEquals($expected, $actual->unfold());
@@ -75,7 +75,7 @@ class MainTest extends TestCase
 
     public function testTextarea()
     {
-        $expected = '<div is="form-control"><label id="comment-label" for="comment">Comment</label><textarea id="comment" name="comment" aria-describedby="comment-label" maxlength="254">hello</textarea></div>';
+        $expected = '<div is="form-control"><label id="comment-label" for="comment">Comment</label><textarea id="comment" name="comment" aria-describedby="comment-label" maxlength="254" required>hello</textarea></div>';
         $actual = UIKit::text("Comment", "comment")
             ->value("hello")->long();
         $this->assertEquals($expected, $actual->unfold());
@@ -184,7 +184,7 @@ class MainTest extends TestCase
 
     public function testUIKitClassMap()
     {
-        $expected = 4;
+        $expected = 5;
         $actual = UIKit::classMap()->count;
         $this->assertEquals($expected, $actual);
 
