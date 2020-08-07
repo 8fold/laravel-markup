@@ -36,13 +36,14 @@ class UIKit extends PHPUIKit
 
     static public function quickChangeNavigation(
         string $methodAction = "post /",
-        string $label = "navigation",
-        string $name = "quick-change-nav"
+        string $label        = "navigation",
+        string $name         = "quick-change-nav",
+        string $value        = ""
     )
     {
         $class = static::classFor("quickChangeNavigation");
         if (old($name) === null) {
-            return $class::fold($methodAction, $label, $name);
+            return $class::fold($methodAction, $label, $name, $value);
         }
         return $class::fold($methodAction, $label, $name, old($name));
     }

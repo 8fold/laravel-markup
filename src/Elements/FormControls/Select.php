@@ -4,8 +4,11 @@ namespace Eightfold\LaravelMarkup\Elements\FormControls;
 
 use Eightfold\Markup\UIKit as PHPUIKit;
 
-use Eightfold\Shoop\Shoop;
-use Eightfold\Shoop\Helpers\Type;
+use Eightfold\Shoop\{
+    Helpers\Type,
+    Shoop,
+    ESArray
+};
 
 class Select extends FormControl
 {
@@ -74,7 +77,7 @@ class Select extends FormControl
     private function selectControl()
     {
         $select = PHPUIKit::select(...$this->content->each(function($option) {
-                if (Type::isArray($option)) {
+                if (Type::is($option, ESArray::class, "array")) {
                     $group = Shoop::array($option);
                     $label = $group->first;
                     $options = $group->dropFirst();
