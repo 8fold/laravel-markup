@@ -11,7 +11,7 @@
   ],
   "require": {
     "php": "~7",
-    "8fold/php-markup": "~0.1"
+    "8fold/php-markup": "~0.4.2"
   },
   "require-dev": {
     "orchestra/testbench": "~5.3",
@@ -25,7 +25,8 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Eightfold\\LaravelMarkup\\Tests\\": "tests/"
+      "Eightfold\\LaravelMarkup\\Tests\\": "tests/",
+      "Eightfold\\Foldable\\Tests\\": "./vendor/8fold/php-foldable/tests/"
     }
   },
   "prefer-stable": true

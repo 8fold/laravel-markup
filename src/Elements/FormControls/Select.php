@@ -4,26 +4,29 @@ namespace Eightfold\LaravelMarkup\Elements\FormControls;
 
 use Eightfold\Markup\UIKit as PHPUIKit;
 
-use Eightfold\Shoop\{
-    Helpers\Type,
-    Shoop,
-    ESArray
-};
+use Eightfold\ShoopShelf\Shoop;
+
+use Eightfold\Foldable\Foldable;
 
 class Select extends FormControl
 {
+    static public function fold(...$args): Foldable
+    {
+        return new static(...$args);
+    }
+
     public function __construct(string $label, string $name, string $value = "")
     {
         $this->type = "dropdown";
         $this->label = $label;
         $this->name = $name;
         $this->value = $value;
-        $this->content = Shoop::array([]);
+        $this->content = Shoop::this([]);
     }
 
     public function options(...$options)
     {
-        $this->content = Shoop::array($options);
+        $this->content = Shoop::this($options);
         return $this;
     }
 
@@ -46,26 +49,25 @@ class Select extends FormControl
                 break;
         }
 
-        if (Shoop::string($this->errorMessage())->isNotEmpty) {
-           return $base->attr("is form-control-with-errors");
+        if (Shoop::this($this->errorMessage())->efIsEmpty()) {
+            return $base->attr("is form-control")->unfold();
         }
-        return $base->attr("is form-control");
+        return $base->attr("is form-control-with-errors")->unfold();
     }
 
     private function radioControl()
     {
-        $options = Shoop::array([]);
-        $this->content->each(function($option) use (&$options) {
-            if (Type::isArray($option)) {
-                Shoop::this($option)->each(function($option) use (&$options) {
-                    $options = $options->plus($this->option($option));
-                });
+        $options = $this->content->each(function($v, $m, &$build) {
+            if (Shoop::this($v)->efIsArray()) {
+                $build[] = Shoop::this($v)->each(function($v) {
+                    return $this->option($v);
+                })->unfold();
 
             } else {
-                $options = $options->plus($this->option($option));
+                $build[] = $this->option($v);
 
             }
-        });
+        })->unfold();
 
         return PHPUIKit::fieldset(
             PHPUIKit::legend($this->label)->attr("id {$this->name}-legend"),
@@ -77,28 +79,30 @@ class Select extends FormControl
     private function selectControl()
     {
         $select = PHPUIKit::select(...$this->content->each(function($option) {
-                if (Type::is($option, ESArray::class, "array")) {
+                if (Shoop::this($option)->efIsArray()) {
                     // Format: [
                     //      "Group title",
                     //      "/path Title",
                     //      "/path/two Title Two",
                     //      "..."
                     // ]
-                    $group = Shoop::array($option);
-                    $label = $group->first;
+                    $group = Shoop::this($option);
+                    $label = $group->first()->unfold();
                     $options = $group->dropFirst();
                     return PHPUIKit::optgroup(
                         ...$options->each(function($option) {
                             return $this->option($option);
                         })
-                    )->attr("label {$group->first}");
+                    )->attr("label {$group->first()->unfold()}");
                 }
                 return $this->option($option);
             })
         )->attr("id {$this->name}", "name {$this->name}");
 
         if ($this->required) {
-            $select = $select->attr(...$this->attributes()->plus("required required"));
+            $select = $select->attr(
+                ...Shoop::this($this->attrList())->append(["required required"])
+            );
         }
 
         return PHPUIKit::div($this->label(), $this->error(), $select);
@@ -106,7 +110,7 @@ class Select extends FormControl
 
     private function option($option)
     {
-        list($value, $title) = Shoop::string($option)->divide(" ", false, 2);
+        list($value, $title) = Shoop::this($option)->divide(" ", false, 2);
         if ($this->type === "radio") {
             $label = PHPUIKit::label($title)->attr("for {$value}");
             $radio = PHPUIKit::input()->attr(
@@ -117,11 +121,16 @@ class Select extends FormControl
             );
 
             if ($this->required) {
-                $radio = $radio->attr(...$this->attributes()->plus("required required"));
+                $radio = $radio->attr(
+                    ...Shoop::this($this->attrList())
+                        ->append(["required required"])->unfold()
+                );
             }
 
             if ($this->value === $value) {
-                $radio = $radio->attr(...$this->attributes()->plus("checked checked"));
+                $radio = $radio->attr(
+                    ...Shoop::this($this->attrList())->append(["checked checked"])
+                );
             }
 
             return $label . $radio;
@@ -129,7 +138,9 @@ class Select extends FormControl
 
         $option = PHPUIKit::option($title)->attr("value {$value}");
         if ($this->value === $value) {
-            $option = $option->attr(...$this->attributes()->plus("selected selected"));
+            $option = $option->attr(
+                ...Shoop::this($this->attrList())->append(["selected selected"])
+            );
         }
         return $option;
     }

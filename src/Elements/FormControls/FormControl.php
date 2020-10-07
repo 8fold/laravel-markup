@@ -2,7 +2,7 @@
 
 namespace Eightfold\LaravelMarkup\Elements\FormControls;
 
-use Eightfold\Markup\Html\Elements\HtmlElement;
+use Eightfold\Markup\Html\HtmlElement;
 
 use Eightfold\Shoop\Shoop;
 use Eightfold\Markup\UIKit as PHPUIKit;
@@ -27,44 +27,45 @@ abstract class FormControl extends HtmlElement implements FormControlInterface
 
     public function type(string $type = ""): string
     {
-        if (Shoop::string($type)->isNotEmpty) {
-            $this->type = $type;
-            return $this;
+        if (Shoop::this($type)->efIsEmpty()) {
+            return $this->type;
         }
-        return $this->type;
+        $this->type = $type;
+        return $this;
     }
 
     public function value(string $value = "")
     {
-        if (Shoop::string($value)->isNotEmpty) {
-            $this->value = $value;
-            return $this;
+        if (Shoop::this($value)->efIsEmpty()) {
+            return $this->value;
         }
-        return $this->value;
+        $this->value = $value;
+        return $this;
     }
 
     public function errorMessage(string $message = "")
     {
-        if (Shoop::string($message)->isNotEmpty) {
-            $this->errorMessage = $message;
-            return $this;
+        if (Shoop::this($message)->efIsEmpty()) {
+            return $this->errorMessage;
         }
-        return $this->errorMessage;
+        $this->errorMessage = $message;
+        return $this;
     }
 
     public function label()
     {
-        return PHPUIKit::label($this->label)->attr("id {$this->name}-label", "for {$this->name}");
+        return PHPUIKit::label($this->label)
+            ->attr("id {$this->name}-label", "for {$this->name}");
     }
 
     protected function error()
     {
-        if (Shoop::string($this->errorMessage())->isNotEmpty) {
-            return PHPUIKit::span($this->errorMessage())->attr(
-                "is form-control-error-message",
-                "id {$this->name}-error-message",
-            );
+        if (Shoop::this($this->errorMessage())->efIsEmpty()) {
+            return "";
         }
-        return "";
+        return PHPUIKit::span($this->errorMessage())->attr(
+            "is form-control-error-message",
+            "id {$this->name}-error-message",
+        );
     }
 }

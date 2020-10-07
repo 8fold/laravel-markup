@@ -2,9 +2,12 @@
 
 namespace Eightfold\LaravelMarkup\Elements\Forms;
 
-use Eightfold\Markup\Html\Elements\HtmlElement;
+use Eightfold\Markup\Html\HtmlElement;
 
+use Eightfold\Markup\Html;
 use Eightfold\Markup\UIKit as PHPUIKit;
+
+use Eightfold\Foldable\Foldable;
 
 use Eightfold\Shoop\Shoop;
 use Eightfold\Shoop\Helpers\Type;
@@ -16,18 +19,20 @@ class Form extends HtmlElement
 
     protected $submitLabel = "Submit";
 
+    static public function fold(...$args): Foldable
+    {
+        return new static(...$args);
+    }
+
     public function __construct($methodAction, ...$content)
     {
-        $this->content = Type::sanitizeType($content, ESArray::class);
+        list($method, $action) = Shoop::this($methodAction)
+            ->divide(" ", false, 2);
+        $this->attr("method ". $method, "action ". $action);
 
-        list($method, $action) = Shoop::string($methodAction)->divide(" ", false, 2);
-        $this->attributes = Shoop::dictionary([
-            "method" => $method,
-            "action" => $action
-        ]);
-
-        $this->method = $method;
-        $this->action = $action;
+        $this->method  = $method;
+        $this->action  = $action;
+        $this->content = Shoop::this($content);
     }
 
     public function submitLabel(string $label = "")
@@ -41,21 +46,38 @@ class Form extends HtmlElement
 
     public function unfold(): string
     {
+
         $token = csrf_token();
         if (env("APP_ENV") === "testing" and $token === null) {
             $token = "testing";
         }
 
-        $content = $this->content->plus(
+        $content = $this->content->append([
             PHPUIKit::input()->attr("type hidden", "name _token", "value {$token}"),
             PHPUIKit::button($this->submitLabel)
-        );
+        ]);
 
-        return PHPUIKit::form(...$content)
-            ->attr(...$this->attributes()->plus(
-                "action {$this->action}",
-                "method {$this->method}"
-            )
-        );
+        return Html::form(...$content)
+            ->attr(
+                ...Shoop::this($this->attrList())->append([
+                    "action {$this->action}",
+                    "method {$this->method}"
+                ])->each(function($v, $m, &$build) {
+                    if (Shoop::this($build)->has($v)->reversed()->unfold()) {
+                        $build[] = $v;
+                    }
+                })->unfold()
+            )->unfold();
+
+        // return PHPUIKit::form(...$content->unfold())->attr(
+        //     ...Shoop::this($this->attrList())->append([
+        //         "action {$this->action}",
+        //         "method {$this->method}"
+        //     ])->each(function($v, $m, &$build) {
+        //         if (Shoop::this($build)->has($v)->reversed()->unfold()) {
+        //             $build[] = $v;
+        //         }
+        //     })->unfold()
+        // )->unfold();
     }
 }
