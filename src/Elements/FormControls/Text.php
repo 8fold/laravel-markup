@@ -4,6 +4,8 @@ namespace Eightfold\LaravelMarkup\Elements\FormControls;
 
 use Eightfold\Markup\UIKit as PHPUIKit;
 
+use Eightfold\Foldable\Foldable;
+
 use Eightfold\Shoop\Shoop;
 
 class Text extends FormControl
@@ -12,6 +14,11 @@ class Text extends FormControl
     private $maxlength = 254;
 
     private $hasCounter = false;
+
+    static public function fold(...$args): Foldable
+    {
+        return new static(...$args);
+    }
 
     public function __construct(
         string $label = "",
@@ -45,7 +52,7 @@ class Text extends FormControl
 
     public function placeholder(string $placeholder = "")
     {
-        if (Shoop::string($placeholder)->isNotEmpty) {
+        if (Shoop::this($placeholder)->isEmpty()->reversed()->unfold()) {
             $this->placeholder = $placeholder;
         }
         return $this;
@@ -61,38 +68,50 @@ class Text extends FormControl
 
     public function input()
     {
+        $attr = Shoop::this($this->attrList())->append([
+            "id {$this->name}",
+            "name {$this->name}",
+            "aria-describedby {$this->name}-label"
+        ]);
+
         if ($this->type === "textarea") {
-            $input = PHPUIKit::textarea($this->value)->attr(...$this->attributes()->plus(
-                    "id {$this->name}",
-                    "name {$this->name}",
-                    "aria-describedby {$this->name}-label"
-                )
-            );
+            $input = PHPUIKit::textarea($this->value)->attr(...$attr);
 
         } else {
-            $input = PHPUIKit::input()->attr(...$this->attributes()->plus(
-                    "id {$this->name}",
-                    "name {$this->name}",
-                    "type {$this->type}",
-                    "aria-describedby {$this->name}-label"
-                )
+            $input = PHPUIKit::input()->attr(
+                ...$attr->append(["type {$this->type}"])
             );
+
         }
 
-        if (Shoop::string($this->placeholder)->isNotEmpty) {
-            $input = $input->attr(...$input->attributes()->plus("placeholder {$this->placeholder}"));
+        if (Shoop::this($this->placeholder)->isEmpty()->reversed()->unfold()) {
+            $input = $input->attr(
+                ...Shoop::this($input->attrList())
+                    ->append(["placeholder {$this->placeholder}"])
+                );
         }
 
-        if (Shoop::string($this->maxlength)->isNotEmpty) {
-            $input = $input->attr(...$input->attributes()->plus("maxlength {$this->maxlength}"));
+        if (Shoop::this($this->maxlength)->isEmpty()->reversed()->unfold()) {
+            $input = $input->attr(
+                ...Shoop::this($input->attrList())
+                    ->append(["maxlength {$this->maxlength}"])
+                );
         }
 
-        if ($this->type !== "textarea" and Shoop::string($this->value)->isNotEmpty) {
-            $input = $input->attr(...$input->attributes()->plus("value {$this->value}"));
+        if ($this->type !== "textarea" and
+            Shoop::this($this->value)->isEmpty()->reversed()->unfold()
+        ) {
+            $input = $input->attr(
+                ...Shoop::this($input->attrList())
+                    ->append(["value {$this->value}"])
+                );
         }
 
         if ($this->required) {
-            $input = $input->attr(...$this->attributes()->plus("required required"));
+            $input = $input->attr(
+                ...Shoop::this($this->attrList())
+                    ->append(["required required"])
+                );
         }
 
         $counter = (! $this->hasCounter)
@@ -102,15 +121,16 @@ class Text extends FormControl
                 " characters remaining"
             )->attr("id {$this->name}-counter", "aria-live polite");
 
-        return Shoop::array([$this->error(), $input, $counter]);
+        return Shoop::this([$this->error(), $input, $counter]);
     }
 
     public function unfold(): string
     {
         $base = PHPUIKit::div($this->label(), ...$this->input());
-        if (Shoop::string($this->errorMessage())->isNotEmpty) {
-            return $base->attr("is form-control-with-errors");
+        if (Shoop::this($this->errorMessage())->efIsEmpty()) {
+            return $base->attr("is form-control");
+
         }
-        return $base->attr("is form-control");
+        return $base->attr("is form-control-with-errors");
     }
 }

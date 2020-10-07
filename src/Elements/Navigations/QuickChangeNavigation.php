@@ -2,6 +2,8 @@
 
 namespace Eightfold\LaravelMarkup\Elements\Navigations;
 
+use Eightfold\Foldable\Foldable;
+
 use Eightfold\Markup\Html\Elements\HtmlElement;
 
 use Eightfold\Markup\UIKit as PHPUIKit;
@@ -20,6 +22,11 @@ class QuickChangeNavigation extends Form
     private $name = "quick-change-nav";
     private $value = "";
 
+    static public function fold(...$args): Foldable
+    {
+        return new static(...$args);
+    }
+
     public function __construct(
         string $methodAction = "post /",
         string $label = "navigation",
@@ -35,7 +42,7 @@ class QuickChangeNavigation extends Form
 
     public function options(...$options)
     {
-        $this->content = Shoop::array($options);
+        $this->content = Shoop::this($options);
         return $this;
     }
 
@@ -47,6 +54,6 @@ class QuickChangeNavigation extends Form
                 Select::fold($this->label, $this->name, $this->value)
                     ->options(...$this->content)
             )->submitLabel($this->submitLabel)
-        )->attr(...$this->attributes());
+        )->attr(...$this->attrList());
     }
 }
