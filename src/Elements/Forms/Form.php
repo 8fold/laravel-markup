@@ -27,7 +27,7 @@ class Form extends HtmlElement
     public function __construct($methodAction, ...$content)
     {
         list($method, $action) = Shoop::this($methodAction)
-            ->divide(" ", false, 2);
+            ->divide(" ", false, 2)->unfold();
         $this->attr("method ". $method, "action ". $action);
 
         $this->method  = $method;

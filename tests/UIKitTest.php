@@ -281,6 +281,7 @@ class MainTest extends TestCase
 
     /**
      * @test
+     * @group current
      */
     public function form()
     {
@@ -290,7 +291,7 @@ class MainTest extends TestCase
         AssertEquals::applyWith(
             $expected,
             "string",
-            22.62, // 12.94,
+            27.14, // 22.62, // 12.94,
             796 // 795
         )->unfoldUsing(
             UIKit::form()
@@ -301,13 +302,13 @@ class MainTest extends TestCase
         AssertEquals::applyWith(
             $expected,
             "string",
-            3.94, // 3.76, // 3.62, // 3.55, // 3.52, // 2.92,
+            4.15, // 3.94, // 3.76, // 3.62, // 3.55, // 3.52, // 2.92,
             1
         )->unfoldUsing(
             UIKit::form()->attr("id form")
         );
 
-        $expected = '<form id="form" action="/" method="post"><input type="hidden" name="_token" value="testing"><button>Submit</button></form>';
+        $expected = '<form id="form" action="/something" method="get"><input type="hidden" name="_token" value="testing"><button>Submit</button></form>';
 
         AssertEquals::applyWith(
             $expected,
@@ -315,23 +316,23 @@ class MainTest extends TestCase
             3.91, // 3.87, // 3.07,
             1
         )->unfoldUsing(
-            UIKit::form()->attr(
-                "id form",
-                "action /something",
-                "method get"
+            UIKit::form(
+                "get /something"
+            )->attr(
+                "id form"
             )
         );
 
-        $expected = '<form id="form" action="/" method="post"><div is="form-control"><label id="select-label" for="select">Select</label><select id="select" name="select" required><option value="value1">Option A</option><option value="value2">Option B</option></select></div><input type="hidden" name="_token" value="testing"><button>Submit</button></form>';
+        $expected = '<form id="form" action="/request" method="get"><div is="form-control"><label id="select-label" for="select">Select</label><select id="select" name="select" required><option value="value1">Option A</option><option value="value2">Option B</option></select></div><input type="hidden" name="_token" value="testing"><button>Submit</button></form>';
 
         AssertEquals::applyWith(
             $expected,
             "string",
             10.91, // 9.85, // 3.11,
-            51
+            115 // 51
         )->unfoldUsing(
             UIKit::form(
-                "post /",
+                "get /request",
                 UIKit::select("Select", "select")->options(
                     "value1 Option A",
                     "value2 Option B"
