@@ -17,7 +17,7 @@ abstract class FormControl extends HtmlElement implements FormControlInterface
     protected $name = "select";
     protected $value = "";
 
-    private $errorMessage = "";
+    protected $errorMessage = "";
 
     public function optional(bool $optional = true)
     {
