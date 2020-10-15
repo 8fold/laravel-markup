@@ -51,10 +51,10 @@ abstract class FormControl extends HtmlElement implements FormControlInterface
 
     protected function error()
     {
-        if (Shoop::this($this->errorMessage())->efIsEmpty()) {
+        if (Shoop::this($this->errorMessage)->efIsEmpty()) {
             return "";
         }
-        return PHPUIKit::span($this->errorMessage())->attr(
+        return PHPUIKit::span($this->errorMessage)->attr(
             "is form-control-error-message",
             "id {$this->name}-error-message",
         );

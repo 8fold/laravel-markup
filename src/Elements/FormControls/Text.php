@@ -127,7 +127,7 @@ class Text extends FormControl
     public function unfold(): string
     {
         $base = PHPUIKit::div($this->label(), ...$this->input());
-        if (Shoop::this($this->errorMessage())->efIsEmpty()) {
+        if (Shoop::this($this->errorMessage)->efIsEmpty()) {
             return $base->attr("is form-control");
 
         }
