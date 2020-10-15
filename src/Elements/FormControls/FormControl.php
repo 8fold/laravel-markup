@@ -27,27 +27,18 @@ abstract class FormControl extends HtmlElement implements FormControlInterface
 
     public function type(string $type = ""): string
     {
-        if (Shoop::this($type)->efIsEmpty()) {
-            return $this->type;
-        }
         $this->type = $type;
         return $this;
     }
 
     public function value(string $value = "")
     {
-        if (Shoop::this($value)->efIsEmpty()) {
-            return $this->value;
-        }
         $this->value = $value;
         return $this;
     }
 
     public function errorMessage(string $message = "")
     {
-        if (Shoop::this($message)->efIsEmpty()) {
-            return $this->errorMessage;
-        }
         $this->errorMessage = $message;
         return $this;
     }
