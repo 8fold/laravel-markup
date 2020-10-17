@@ -4,6 +4,8 @@ namespace Eightfold\LaravelMarkup\Elements\FormControls;
 
 use Eightfold\Markup\UIKit as PHPUIKit;
 
+use Eightfold\Foldable\Foldable;
+
 use Eightfold\Shoop\Shoop;
 
 class Password extends FormControl
