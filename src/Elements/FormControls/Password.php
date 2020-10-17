@@ -38,20 +38,20 @@ class Password extends FormControl
 
     public function input()
     {
-        $input = PHPUIKit::input()->attr(...$this->attributes()->plus(
+        $input = PHPUIKit::input()->attr(...$this->attrList()->append([
                 "id {$this->name}",
                 "name {$this->name}",
                 "type {$this->type}",
                 "aria-describedby {$this->name}-label"
-            )
+            ])
         );
 
         if (Shoop::string($this->maxlength)->isNotEmpty) {
-            $input = $input->attr(...$input->attributes()->plus("maxlength {$this->maxlength}"));
+            $input = $input->attr(...$input->attrList()->append(["maxlength {$this->maxlength}"]));
         }
 
         if ($this->required) {
-            $input = $input->attr(...$this->attributes()->plus("required required"));
+            $input = $input->attr(...$this->attrList()->append(["required required"]));
         }
 
         return Shoop::array([$this->error(), $input]);
