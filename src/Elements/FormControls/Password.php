@@ -10,6 +10,11 @@ class Password extends FormControl
 {
     private $maxlength = 254;
 
+    static public function fold(...$args): Foldable
+    {
+        return new static(...$args);
+    }
+
     public function __construct(
         string $label = "",
         string $name = "",
