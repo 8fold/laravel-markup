@@ -69,7 +69,7 @@ class UIKit extends PHPUIKit
 
     static public function password(string $label, string $name)
     {
-        $class = 'Elements\\FormControls\\Password';
+        $class = __NAMESPACE__ .'\\Elements\\FormControls\\Password';
         if (session()->get("errors") === null or session()->get("errors")->first($name) === null) {
             return $class::fold($label, $name);
         }
