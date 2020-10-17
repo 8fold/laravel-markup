@@ -46,7 +46,7 @@ class Password extends FormControl
             ])->unfold()
         );
 
-        if (Shoop::string($this->maxlength)->isNotEmpty) {
+        if (Shoop::this($this->maxlength)->isEmpty()->reversed()->unfold()) {
             $input = $input->attr(...Shoop::this($input->attrList())->append([
                     "maxlength {$this->maxlength}"
                 ])->unfold()
@@ -60,13 +60,13 @@ class Password extends FormControl
             );
         }
 
-        return Shoop::array([$this->error(), $input]);
+        return Shoop::this([$this->error(), $input]);
     }
 
     public function unfold(): string
     {
         $base = PHPUIKit::div($this->label(), ...$this->input());
-        if (Shoop::string($this->errorMessage())->isNotEmpty) {
+        if (Shoop::this($this->errorMessage())->isEmpty()->unfold()) {
             return $base->attr("is form-control-with-errors");
         }
         return $base->attr("is form-control");
