@@ -36,10 +36,20 @@ class Select extends FormControl
         return $this;
     }
 
+    public function checkbox()
+    {
+        $this->type = "checkbox";
+        return $this;
+    }
+
     public function unfold(): string
     {
         $base = "";
         switch ($this->type) {
+            case "checkbox":
+                $base = $this->checkboxControl();
+                break;
+
             case "radio":
                 $base = $this->radioControl();
                 break;
@@ -49,13 +59,34 @@ class Select extends FormControl
                 break;
         }
 
-        if (Shoop::this($this->errorMessage())->efIsEmpty()) {
+        if (Shoop::this($this->errorMessage)->efIsEmpty()) {
             return $base->attr("is form-control")->unfold();
         }
         return $base->attr("is form-control-with-errors")->unfold();
     }
 
     private function radioControl()
+    {
+        $options = $this->content->each(function($v, $m, &$build) {
+            if (Shoop::this($v)->efIsArray()) {
+                $build[] = Shoop::this($v)->each(function($v) {
+                    return $this->option($v);
+                })->unfold();
+
+            } else {
+                $build[] = $this->option($v);
+
+            }
+        })->unfold();
+
+        return PHPUIKit::fieldset(
+            PHPUIKit::legend($this->label)->attr("id {$this->name}-legend"),
+            $this->error(),
+            PHPUIKit::listWith(...$options)
+        );
+    }
+
+    private function checkboxControl()
     {
         $options = $this->content->each(function($v, $m, &$build) {
             if (Shoop::this($v)->efIsArray()) {
@@ -111,14 +142,26 @@ class Select extends FormControl
     private function option($option)
     {
         list($value, $title) = Shoop::this($option)->divide(" ", false, 2);
-        if ($this->type === "radio") {
+        if ($this->type === "checkbox" or $this->type === "radio") {
             $label = PHPUIKit::label($title)->attr("for {$value}");
-            $radio = PHPUIKit::input()->attr(
-                "type radio",
-                "name {$this->name}",
-                "value {$value}",
-                "id {$value}"
-            );
+
+            if ($this->type === "checkbox") {
+                $radio = PHPUIKit::input()->attr(
+                    "type checkbox",
+                    "name {$this->name}[]",
+                    "value {$value}",
+                    "id {$value}"
+                );
+
+            } elseif ($this->type === "radio") {
+                $radio = PHPUIKit::input()->attr(
+                    "type radio",
+                    "name {$this->name}",
+                    "value {$value}",
+                    "id {$value}"
+                );
+
+            }
 
             if ($this->required) {
                 $radio = $radio->attr(

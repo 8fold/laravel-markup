@@ -37,7 +37,7 @@ class MainTest extends TestCase
             $expected,
             "string",
             28.7,
-            851
+            962 // 851
         )->unfoldUsing(
             QuickChangeNavigation::fold(
                 "post /",
@@ -52,7 +52,7 @@ class MainTest extends TestCase
     /**
      * @test
      */
-    public function testText()
+    public function text()
     {
         $expected = '<div is="form-control"><label id="counter-label" for="counter">Counter</label><input id="counter" type="text" name="counter" aria-describedby="counter-label" maxlength="254" required><span id="counter-counter" aria-live="polite"><i>254</i> characters remaining</span></div>';
 
@@ -81,7 +81,7 @@ class MainTest extends TestCase
         AssertEquals::applyWith(
             $expected,
             "string",
-            6.12, // 5.74, // 5.59, // 5.44, // 4.53, // 4.39,
+            6.15, // 6.12, // 5.74, // 5.59, // 5.44, // 4.53, // 4.39,
             1
         )->unfoldUsing(
             UIKit::text("Counter", "counter")
@@ -98,8 +98,8 @@ class MainTest extends TestCase
         AssertEquals::applyWith(
             $expected,
             "string",
-            5.35,
-            1
+            5.63, // 5.35,
+            64
         )->unfoldUsing(
             UIKit::text("Counter", "counter")
         );
@@ -166,6 +166,7 @@ class MainTest extends TestCase
 
     /**
      * @test
+     * @group current
      */
     public function _select()
     {
@@ -241,24 +242,37 @@ class MainTest extends TestCase
             )
         );
 
-        // $expected = '<fieldset is="form-control"><legend id="select-legend">Select</legend><ul><li><label for="optgroup">label</label><input id="optgroup" type="radio" name="select" value="optgroup" checked required></li><li><label for="value1">Option A</label><input id="value1" type="radio" name="select" value="value1" required></li><li><label for="value2">Option B</label><input id="value2" type="radio" name="select" value="value2" required></li><li><label for="value3">Option C</label><input id="value3" type="radio" name="select" value="value3" required></li></ul></fieldset>';
+        $expected = '<fieldset is="form-control"><legend id="select-legend">Select</legend><ul><li><label for="value1">Option A</label><input id="value1" type="radio" name="select" value="value1" required></li><li><label for="value2">Option B</label><input id="value2" type="radio" name="select" value="value2" required></li><li><label for="value3">Option C</label><input id="value3" type="radio" name="select" value="value3" required></li></ul></fieldset>';
 
-        // AssertEquals::applyWith(
-        //     $expected,
-        //     "string",
-        //     0.001,
-        //     1
-        // )->unfoldUsing(
-        //     Select::fold("Select", "select", "optgroup")
-        //         ->options(
-        //             [
-        //                 "optgroup label",
-        //                 "value1 Option A",
-        //                 "value2 Option B"
-        //             ],
-        //             "value3 Option C"
-        //         )->radio()
-        // );
+        AssertEquals::applyWith(
+            $expected,
+            "string",
+            13.41, // 12.13,
+            73 // 10
+        )->unfoldUsing(
+            Select::fold("Select", "select", "radio")
+                ->options(
+                    "value1 Option A",
+                    "value2 Option B",
+                    "value3 Option C"
+                )->radio()
+        );
+
+        $expected = '<fieldset is="form-control"><legend id="checkbox-legend">Checkbox</legend><ul><li><label for="value1">Option A</label><input id="value1" type="checkbox" name="checkbox[]" value="value1" required></li><li><label for="value2">Option B</label><input id="value2" type="checkbox" name="checkbox[]" value="value2" required></li><li><label for="value3">Option C</label><input id="value3" type="checkbox" name="checkbox[]" value="value3" required></li></ul></fieldset>';
+
+        AssertEquals::applyWith(
+            $expected,
+            "string",
+            10.41,
+            1
+        )->unfoldUsing(
+            Select::fold("Checkbox", "checkbox", "check")
+                ->options(
+                    "value1 Option A",
+                    "value2 Option B",
+                    "value3 Option C"
+                )->checkbox()
+        );
 
         $errorBag = (new ViewErrorBag)
             ->put("default", new MessageBag([
@@ -345,7 +359,7 @@ class MainTest extends TestCase
         AssertEquals::applyWith(
             $expected,
             "string",
-            3.05, // 2.99,
+            3.52, // 3.05, // 2.99,
             1
         )->unfoldUsing(
             UIKit::form()->submitLabel("new label")
