@@ -15,7 +15,7 @@ class Select extends FormControl
         return new static(...$args);
     }
 
-    public function __construct(string $label, string $name, string $value = "")
+    public function __construct(string $label, string $name, $value = "")
     {
         $this->type = "dropdown";
         $this->label = $label;
@@ -170,7 +170,14 @@ class Select extends FormControl
                 );
             }
 
-            if ($this->value === $value) {
+            if ($this->type === "radio" and $this->value === $value) {
+                $radio = $radio->attr(
+                    ...Shoop::this($this->attrList())->append(["checked checked"])
+                );
+
+            } elseif ($this->type === "checkbox"
+                and Shoop::this($this->value)->has($value)->efToBoolean()
+            ) {
                 $radio = $radio->attr(
                     ...Shoop::this($this->attrList())->append(["checked checked"])
                 );
