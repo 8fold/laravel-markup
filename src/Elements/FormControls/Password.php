@@ -66,7 +66,7 @@ class Password extends FormControl
     public function unfold(): string
     {
         $base = PHPUIKit::div($this->label(), ...$this->input());
-        if (Shoop::this($this->errorMessage())->isEmpty()->unfold()) {
+        if (Shoop::this($this->errorMessage)->efIsEmpty()) {
             return $base->attr("is form-control-with-errors");
         }
         return $base->attr("is form-control");
