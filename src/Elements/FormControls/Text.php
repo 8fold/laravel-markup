@@ -129,7 +129,6 @@ class Text extends FormControl
         $base = PHPUIKit::div($this->label(), ...$this->input());
         if (Shoop::this($this->errorMessage)->efIsEmpty()) {
             return $base->attr("is form-control");
-
         }
         return $base->attr("is form-control-with-errors");
     }
