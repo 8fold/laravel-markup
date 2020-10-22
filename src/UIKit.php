@@ -74,6 +74,6 @@ class UIKit extends PHPUIKit
             return $class::fold($label, $name);
         }
 
-        return $class::fold($lable, $name)->errorMessage(session()->get("errors")->first($name));
+        return $class::fold($label, $name)->errorMessage(session()->get("errors")->first($name));
     }
 }
