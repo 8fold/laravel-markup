@@ -18,6 +18,7 @@ class Form extends HtmlElement
     private $action = "/";
 
     protected $submitLabel = "Submit";
+    protected $submitAttr  = [];
 
     static public function fold(...$args): Foldable
     {
@@ -44,9 +45,14 @@ class Form extends HtmlElement
         return $this;
     }
 
+    public function submitAttr(string ...$attr)
+    {
+        $this->submitAttr = $attr;
+        return $this;
+    }
+
     public function unfold(): string
     {
-
         $token = csrf_token();
         if (env("APP_ENV") === "testing" and $token === null) {
             $token = "testing";
@@ -54,7 +60,7 @@ class Form extends HtmlElement
 
         $content = $this->content->append([
             PHPUIKit::input()->attr("type hidden", "name _token", "value {$token}"),
-            PHPUIKit::button($this->submitLabel)
+            PHPUIKit::button($this->submitLabel)->attr(...$this->submitAttr)
         ]);
 
         return Html::form(...$content)
@@ -68,16 +74,5 @@ class Form extends HtmlElement
                     }
                 })->unfold()
             )->unfold();
-
-        // return PHPUIKit::form(...$content->unfold())->attr(
-        //     ...Shoop::this($this->attrList())->append([
-        //         "action {$this->action}",
-        //         "method {$this->method}"
-        //     ])->each(function($v, $m, &$build) {
-        //         if (Shoop::this($build)->has($v)->reversed()->unfold()) {
-        //             $build[] = $v;
-        //         }
-        //     })->unfold()
-        // )->unfold();
     }
 }
