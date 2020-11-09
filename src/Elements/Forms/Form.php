@@ -43,6 +43,9 @@ class Form extends HtmlElement
         return $this;
     }
 
+    /**
+     * @deprecated
+     */
     public function submitLabel(string $label = "")
     {
         $this->submit($label, $this->submitAttr);
@@ -54,6 +57,9 @@ class Form extends HtmlElement
         // return $this;
     }
 
+    /**
+     * @deprecated
+     */
     public function submitAttr(string ...$attr)
     {
         $this->submit($this->submitLabel, $attr);
