@@ -36,19 +36,36 @@ class Form extends HtmlElement
         $this->content = Shoop::this($content);
     }
 
-    public function submitLabel(string $label = "")
+    public function submit(string $label = "Submit", string ...$attr)
     {
-        if (strlen($label) === 0) {
-            $label = "Submit";
-        }
         $this->submitLabel = $label;
+        $this->submitAttr  = $attr;
         return $this;
     }
 
+    /**
+     * @deprecated
+     */
+    public function submitLabel(string $label = "")
+    {
+        $this->submit($label, $this->submitAttr);
+        return $this;
+        // if (strlen($label) === 0) {
+        //     $label = "Submit";
+        // }
+        // $this->submitLabel = $label;
+        // return $this;
+    }
+
+    /**
+     * @deprecated
+     */
     public function submitAttr(string ...$attr)
     {
-        $this->submitAttr = $attr;
+        $this->submit($this->submitLabel, $attr);
         return $this;
+        // $this->submitAttr = $attr;
+        // return $this;
     }
 
     public function unfold(): string
