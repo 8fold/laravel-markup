@@ -21,12 +21,11 @@ class Select extends FormControl
         $this->label = $label;
         $this->name = $name;
         $this->value = $value;
-        $this->content = Shoop::this([]);
     }
 
     public function options(...$options)
     {
-        $this->content = Shoop::this($options);
+        $this->content = $options;
         return $this;
     }
 
@@ -109,7 +108,7 @@ class Select extends FormControl
 
     private function selectControl()
     {
-        $select = PHPUIKit::select(...$this->content->each(function($option) {
+        $select = PHPUIKit::select(...Shoop::this($this->content)->each(function($option) {
                 if (Shoop::this($option)->efIsArray()) {
                     // Format: [
                     //      "Group title",

@@ -42,7 +42,7 @@ class QuickChangeNavigation extends Form
 
     public function options(...$options)
     {
-        $this->content = Shoop::this($options);
+        $this->content = $options;
         return $this;
     }
 
@@ -51,9 +51,9 @@ class QuickChangeNavigation extends Form
         return UIKit::nav(
             UIKit::form(
                 $this->methodAction,
-                Select::fold($this->label, $this->name, $this->value)
-                    ->options(...$this->content)
-            )->submitLabel($this->submitLabel)
-        )->attr(...$this->attrList());
+                UIKit::select($this->label, $this->name, $this->value)
+                    ->options(...$this->content)->unfold()
+            )->submit($this->submitLabel)
+        )->attr(...$this->submitAttr)->unfold();
     }
 }

@@ -50,11 +50,6 @@ class Form extends HtmlElement
     {
         $this->submit($label, $this->submitAttr);
         return $this;
-        // if (strlen($label) === 0) {
-        //     $label = "Submit";
-        // }
-        // $this->submitLabel = $label;
-        // return $this;
     }
 
     /**
@@ -64,8 +59,6 @@ class Form extends HtmlElement
     {
         $this->submit($this->submitLabel, $attr);
         return $this;
-        // $this->submitAttr = $attr;
-        // return $this;
     }
 
     public function unfold(): string
