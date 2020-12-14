@@ -51,7 +51,8 @@ class QuickChangeNavigation extends Form
         return UIKit::nav(
             UIKit::form(
                 $this->methodAction,
-                UIKit::select($this->label, $this->name, $this->value)
+                // To allow pre-select outside of Laravel
+                Select::fold($this->label, $this->name, $this->value)
                     ->options(...$this->content)->unfold()
             )->submit($this->submitLabel)
         )->attr(...$this->submitAttr)->unfold();
