@@ -87,7 +87,7 @@ class Select extends FormControl
 
     private function checkboxControl()
     {
-        $options = $this->content->each(function($v, $m, &$build) {
+        $options = Shoop::this($this->content)->each(function($v, $m, &$build) {
             if (Shoop::this($v)->efIsArray()) {
                 $build[] = Shoop::this($v)->each(function($v) {
                     return $this->option($v);
