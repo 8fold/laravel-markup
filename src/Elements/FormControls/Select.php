@@ -68,9 +68,7 @@ class Select extends FormControl
     {
         $options = $this->content->each(function($v, $m, &$build) {
             if (Shoop::this($v)->efIsArray()) {
-                $build[] = Shoop::this($v)->each(function($v) {
-                    return $this->option($v);
-                })->unfold();
+                $build[] = Shoop::this($v)->each(fn($v) => $this->option($v))->unfold();
 
             } else {
                 $build[] = $this->option($v);
@@ -89,9 +87,7 @@ class Select extends FormControl
     {
         $options = Shoop::this($this->content)->each(function($v, $m, &$build) {
             if (Shoop::this($v)->efIsArray()) {
-                $build[] = Shoop::this($v)->each(function($v) {
-                    return $this->option($v);
-                })->unfold();
+                $build[] = Shoop::this($v)->each(fn($v) => $this->option($v))->unfold();
 
             } else {
                 $build[] = $this->option($v);
@@ -120,9 +116,7 @@ class Select extends FormControl
                     $label = $group->first()->unfold();
                     $options = $group->dropFirst();
                     return PHPUIKit::optgroup(
-                        ...$options->each(function($option) {
-                            return $this->option($option);
-                        })
+                        ...$options->each(fn($option) => $this->option($option))
                     )->attr("label {$group->first()->unfold()}");
                 }
                 return $this->option($option);
