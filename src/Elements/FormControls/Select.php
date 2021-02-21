@@ -66,7 +66,7 @@ class Select extends FormControl
 
     private function radioControl()
     {
-        $options = $this->content->each(function($v, $m, &$build) {
+        $options = Shoop::this($this->content)->each(function($v, $m, &$build) {
             if (Shoop::this($v)->efIsArray()) {
                 $build[] = Shoop::this($v)->each(fn($v) => $this->option($v))->unfold();
 
