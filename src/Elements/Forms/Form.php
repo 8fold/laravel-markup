@@ -48,7 +48,7 @@ class Form extends HtmlElement
      */
     public function submitLabel(string $label = "")
     {
-        $this->submit($label, $this->submitAttr);
+        $this->submit($label, ...$this->submitAttr);
         return $this;
     }
 

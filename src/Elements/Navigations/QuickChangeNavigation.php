@@ -48,6 +48,9 @@ class QuickChangeNavigation extends Form
 
     public function unfold(): string
     {
+        // deprecate
+        $this->attr(...$this->submitAttr);
+
         return UIKit::nav(
             UIKit::form(
                 $this->methodAction,
@@ -55,6 +58,6 @@ class QuickChangeNavigation extends Form
                 Select::fold($this->label, $this->name, $this->value)
                     ->options(...$this->content)->unfold()
             )->submit($this->submitLabel)
-        )->attr(...$this->submitAttr)->unfold();
+        )->attr(...$this->attributes)->unfold();
     }
 }

@@ -81,7 +81,7 @@ class MainTest extends TestCase
         AssertEquals::applyWith(
             $expected,
             "string",
-            6.15, // 6.12, // 5.74, // 5.59, // 5.44, // 4.53, // 4.39,
+            9.4, // 7.02, // 6.82, // 6.15, // 6.12, // 5.74, // 5.59, // 5.44, // 4.53, // 4.39,
             1
         )->unfoldUsing(
             UIKit::text("Counter", "counter")
@@ -98,7 +98,7 @@ class MainTest extends TestCase
         AssertEquals::applyWith(
             $expected,
             "string",
-            5.63, // 5.35,
+            8.98, // 5.63, // 5.35,
             64
         )->unfoldUsing(
             UIKit::text("Counter", "counter")
@@ -126,7 +126,7 @@ class MainTest extends TestCase
         AssertEquals::applyWith(
             $expected,
             "string",
-            7.04,
+            8.34, // 7.04,
             1
         )->unfoldUsing(
             UIKit::text("Email address", "email")->email()
@@ -247,7 +247,7 @@ class MainTest extends TestCase
         AssertEquals::applyWith(
             $expected,
             "string",
-            13.41, // 12.13,
+            19.36, // 18.15, // 13.41, // 12.13,
             73 // 10
         )->unfoldUsing(
             Select::fold("Select", "select", "radio")
@@ -263,8 +263,8 @@ class MainTest extends TestCase
         AssertEquals::applyWith(
             $expected,
             "string",
-            10.41,
-            1
+            19.46, // 19.17, // 10.87, // 10.41,
+            17 // 1
         )->unfoldUsing(
             Select::fold("Checkbox", "checkbox", "check")
                 ->options(
@@ -316,7 +316,7 @@ class MainTest extends TestCase
         AssertEquals::applyWith(
             $expected,
             "string",
-            4.15, // 3.94, // 3.76, // 3.62, // 3.55, // 3.52, // 2.92,
+            5.25, // .15, // 3.94, // 3.76, // 3.62, // 3.55, // 3.52, // 2.92,
             1
         )->unfoldUsing(
             UIKit::form()->attr("id form")
@@ -327,7 +327,7 @@ class MainTest extends TestCase
         AssertEquals::applyWith(
             $expected,
             "string",
-            3.91, // 3.87, // 3.07,
+            7.39, // 5.22, // 3.91, // 3.87, // 3.07,
             1
         )->unfoldUsing(
             UIKit::form(
@@ -342,7 +342,7 @@ class MainTest extends TestCase
         AssertEquals::applyWith(
             $expected,
             "string",
-            10.91, // 9.85, // 3.11,
+            12.83, // 10.91, // 9.85, // 3.11,
             115 // 51
         )->unfoldUsing(
             UIKit::form(
@@ -359,7 +359,7 @@ class MainTest extends TestCase
         AssertEquals::applyWith(
             $expected,
             "string",
-            3.52, // 3.05, // 2.99,
+            3.73, // 3.52, // 3.05, // 2.99,
             1
         )->unfoldUsing(
             UIKit::form()->submitLabel("new label")
